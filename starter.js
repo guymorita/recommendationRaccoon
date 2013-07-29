@@ -1,8 +1,7 @@
 exports.starter = function(urlOfDB){
 
   var async = require('async'),
-  mongoose = require('mongoose'),
-  mgo = require('mongodb');
+  mongoose = require('mongoose');
   _ = require('underscore');
 
   var users = {};

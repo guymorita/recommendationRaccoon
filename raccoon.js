@@ -1,10 +1,8 @@
 exports.raccoon = function(urlOfDB){
 
   var models = require('./starter.js').starter(urlOfDB),
-    async = require('async'),
     mongoose = require('mongoose'),
-    algo = require('./algorithms.js'),
-    mgo = require('mongodb');
+    algo = require('./algorithms.js');
 
   return {
     models: models,
@@ -17,14 +15,9 @@ exports.raccoon = function(urlOfDB){
       algo.topSimilarUsers(userList, userName, callback);
     }
 
-    // exports.similarTo = function(item_id, num_to_return){
-
-    // };
-
     // exports.mostLiked = function(){
 
     // };
-
 
   };
 };
