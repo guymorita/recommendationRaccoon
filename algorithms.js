@@ -59,26 +59,28 @@ var sim_pearson = function(users, person1, person2){
 
 // sim_pearson(critics, 'Alex', 'Felix');
 
-exports.topMatches = function(users, person1, n){
+exports.topSimilarUsers = function(users, person1, callback, n){
   n = n || 5;
-  var scores = [];
+  var scores = {};
   _.each(users, function(value, key){
+    // scores[key] = 1;// console.log(value);
+    console.log(key);
     if (person1 !== key){
-      scores.push(sim_pearson(users, person1, key));
+      scores[key] = sim_pearson(users, person1, key);
     }
   });
-  scores.sort();
-  scores.reverse();
-  return scores.splice(0,n);
+  // scores.sort();
+  // scores.reverse();
+  callback(scores); //.splice(0,n);
 };
 
 // topMatches(critics, 'Alex', 3);
 
-exports.getRecommendations = function(users, person1){
+exports.getRecommendations = function(users, person1, callback){
   var totals = {};
   var simSums = {};
   var rankings = [];
-  var sim, totals, newObj;
+  var sim, newObj;
 
   for (var otherPerson in users){
     if (person1 === otherPerson){
@@ -97,7 +99,7 @@ exports.getRecommendations = function(users, person1){
         }
       });
     }
-  };
+  }
   _.each(totals, function(movieTotal, movie){
     newObj = {};
     newObj[movie] = (movieTotal / simSums[movie]);
@@ -106,6 +108,7 @@ exports.getRecommendations = function(users, person1){
   rankings.sort(sortArrayWithNestedObjects);
   rankings.reverse();
   console.log(rankings);
+  callback(rankings);
   return rankings;
 };
 
