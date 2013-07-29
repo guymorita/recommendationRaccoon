@@ -46,7 +46,7 @@ exports.starter = function(urlOfDB){
               var userData = {
                 name: name,
                 movies: insertMovies
-              }
+              };
               var user = new User(userData);
               user.save();
             } else {
@@ -76,5 +76,5 @@ exports.starter = function(urlOfDB){
       });
       console.log('library imported');
     }
-  }
+  };
 };
