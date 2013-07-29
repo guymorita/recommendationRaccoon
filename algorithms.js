@@ -61,14 +61,16 @@ var sim_pearson = function(users, person1, person2){
 
 exports.topSimilarUsers = function(users, person1, callback, n){
   n = n || 5;
-  var scores = {};
+  var name, newObj;
+  var scores = [];
   _.each(users, function(value, key){
-    // scores[key] = 1;// console.log(value);
-    console.log(key);
+    newObj = {};
     if (person1 !== key){
-      scores[key] = sim_pearson(users, person1, key);
+      newObj[key] = sim_pearson(users, person1, key);
+      scores.push(newObj);
     }
   });
+  scores.sort(sortArrayWithNestedObjects).reverse();
   // scores.sort();
   // scores.reverse();
   callback(scores); //.splice(0,n);
@@ -107,9 +109,7 @@ exports.getRecommendations = function(users, person1, callback){
   });
   rankings.sort(sortArrayWithNestedObjects);
   rankings.reverse();
-  console.log(rankings);
   callback(rankings);
-  return rankings;
 };
 
 // exports.getRecommendations(critics, 'Toby');
