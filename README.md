@@ -9,6 +9,19 @@ A collaborative filtering based recommendation engine and NPM module built on to
 
 ## Installation
 
-``` javascript
+``` js
 npm install racooon
 ```
+
+## Coming soon (now)
+
+* Helper functions to pull in user data
+* Change of data structure to an array of objects
+* Implementation of Redis
+* Helper functions to add new reviews
+
+After installing Raccoon you should configure it.
+
+## Links
+
+* Code: 'git clone git://github.com/guymorita/raccoon.git'
