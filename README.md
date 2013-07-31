@@ -9,7 +9,7 @@ A collaborative filtering based recommendation engine and NPM module built on to
 
 ## Installation
 
-``` js
+``` bash
 npm install racooon
 ```
 
