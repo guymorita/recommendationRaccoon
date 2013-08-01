@@ -49,17 +49,39 @@ exports.starter = function(urlOfDB){
     });
   };
 
+  // var buildMovieList = function(userMovieObject, callback){
+  //   console.log(userMovieObject);
+  //   var movieObj = {};
+  //   var movieName;
+  //   _.each(userMovieObject.movies, function(value, key){
+  //     movieName = moviesArray[Number(key)];
+  //     if (Number(value)>0){
+  //       movieObj[movieName] = Number(value);
+  //     }
+  //   });
+  //   callback(movieObj);
+  // };
+
   var buildMovieList = function(userMovieObject, callback){
+    var movieArr = [];
     var movieObj = {};
-    var movieName;
+    var movieName = {};
     _.each(userMovieObject.movies, function(value, key){
-      movieName = moviesArray[Number(key)];
-      if (Number(value)>0){
-        movieObj[movieName] = Number(value);
+      movieName = moviesArray[Number(value.id)];
+      if (Number(value.value)>0){
+        movieObj['name'] = movieName;
+        movieObj['rating'] = Number(value.value);
+        movieArr.push(movieObj);
+        movieObj = {};
       }
     });
-    callback(movieObj);
+    callback(movieArr);
+    // look into the array. replace each
+
+    // return an array with objects for each movie with 'name' and 'rating'
   };
+
+
 
   return {
     useee: users,
@@ -73,28 +95,19 @@ exports.starter = function(urlOfDB){
         if (index === 0){
           headers = row;
         } else {
-          var insertMovies = {};
+          var insertMovies = [];
+          var insertObj = {};
           var name = row[0];
           for (var i = 1; i < row.length; i++){
             if (row[i] !== ""){
-              insertMovies[headers[i]]=Number(row[i]);
+              insertObj['name'] = headers[i];
+              insertObj['rating'] = Number(row[i]);
+              insertMovies.push(insertObj);
+              insertObj = {};
+              // insertMovies[headers[i]]=Number(row[i]);
             }
           }
           newUser(name, insertMovies);
-          // User.findOne({name:name}, function(err, data){
-          //   if (data === null){
-          //     var userData = {
-          //       name: name,
-          //       movies: insertMovies
-          //     };
-          //     var user = new User(userData);
-          //     user.save();
-          //   } else {
-          //     var newMovieObj = _.extend({}, insertMovies, data.movies);
-          //     data.set('movies', newMovieObj);
-          //     data.save();
-          //   }
-          // });
         }
       })
       .on('end', function(){
@@ -107,20 +120,24 @@ exports.starter = function(urlOfDB){
     },
     importLib:function(callback){
       User.find(function(err, mongoUsers){
-          for (var i = 0; i < mongoUsers.length; i++){
-            users[mongoUsers[i].name] = mongoUsers[i].movies;
-            _.each(mongoUsers[i].movies, function(value, key){
-              moviesHash[key] = 1;
-            });
+        var movieInsertObj = {};
+        for (var i = 0; i < mongoUsers.length; i++){
+          for (var j = 0; j < mongoUsers[i].movies.length; j++){
+            movieInsertObj[mongoUsers[i].movies[j]['name']] = mongoUsers[i].movies[j]['rating'];
+            moviesHash[mongoUsers[i].movies[j]['name']] = 1;
           }
-          for (var key in moviesHash){
-            moviesArray.push(key);
-          }
-          moviesArray.sort();
-          if (callback){
-            console.log('imported library callback');
-            callback();
-          }
+          users[mongoUsers[i].name] = movieInsertObj;
+          movieInsertObj = {};
+        }
+        for (var key in moviesHash){
+          moviesArray.push(key);
+        }
+        moviesArray.sort();
+        console.log(users);
+        if (callback){
+          console.log('imported library callback');
+          callback();
+        }
       });
       console.log('library imported');
     }
