@@ -13,6 +13,10 @@ exports.raccoon = function(urlOfDB){
 
     topSimilarUsers: function(userList, userName, callback){
       algo.topSimilarUsers(userList, userName, callback);
+    },
+
+    similarity: function(userId1, userId2){
+      algo.jaccardCoefficient(userId1, userId2);
     }
 
     // exports.mostLiked = function(){
