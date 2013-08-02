@@ -59,6 +59,22 @@ var pearsonCoefficient = function(users, person1, person2){
   return r;
 };
 
+var jaccardCoefficient = function(userId1, userId2){
+  var similarity = 0,
+  likedCount = 0,
+  dislikedCount = 0;
+  debugger;
+  similarity += _.size(client.sinter(['movie',userId1,'liked'].join(":"),['movie',userId2,'liked'].join(":")));
+  similarity += _.size(client.sinter(['movie',userId1,'disliked'].join(":"),['movie',userId2,'disliked'].join(":")));
+
+  similarity -= _.size(client.sinter(['movie',userId1,'liked'].join(":"),['movie',userId2,'disliked'].join(":")));
+  similarity -= _.size(client.sinter(['movie',userId1,'disliked'].join(":"),['movie',userId2,'liked'].join(":")));
+
+  likedCount += client.scard(['movie',userId1,'liked'].join(":"));
+  dislikedCount += client.scard(['movie',userId1,'disliked'].join(":"));
+
+  console.log(similarity / (likedCount + dislikedCount));
+};
 exports.topSimilarUsers = function(users, person1, callback, n){
   n = n || 5;
   var name, newObj;
