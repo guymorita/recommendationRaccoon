@@ -27,14 +27,14 @@ var jaccardCoefficient = function(userId1, userId2, callback){
 
 exports.updateSimilarityFor = function(userId, callback){
   userId = String(userId);
-  var similaritySet, userRatedMovieIds, movieLikedByUsers, movieDislikedByUsers, similarUserIds;
+  var similaritySet, userRatedItemIds, itemLikedByUsers, itemDislikedByUsers, similarUserIds;
   similaritySet = [config.className,userId,'similaritySet'].join(":");
-  client.sunion([config.className,userId,'liked'].join(":"),[config.className,userId,'disliked'].join(":"), function(err, userRatedMovieIds){
-    if (userRatedMovieIds.length > 0){
-      similarUserIds = _.map(userRatedMovieIds, function(otherUserRatedId, key){
-        movieLikedByUsers = [config.className, otherUserRatedId, 'liked'].join(":");
-        movieDislikedByUsers = [config.className, otherUserRatedId, 'disliked'].join(":");
-        return [movieLikedByUsers, movieDislikedByUsers];
+  client.sunion([config.className,userId,'liked'].join(":"),[config.className,userId,'disliked'].join(":"), function(err, userRatedItemIds){
+    if (userRatedItemIds.length > 0){
+      similarUserIds = _.map(userRatedItemIds, function(otherUserRatedId, key){
+        itemLikedByUsers = [config.className, otherUserRatedId, 'liked'].join(":");
+        itemDislikedByUsers = [config.className, otherUserRatedId, 'disliked'].join(":");
+        return [itemLikedByUsers, itemDislikedByUsers];
       });
     }
     similarUserIds = _.flatten(similarUserIds);
@@ -52,14 +52,14 @@ exports.updateSimilarityFor = function(userId, callback){
   });
 };
 
-exports.predictFor = function(userId, movieId, callback){
+exports.predictFor = function(userId, itemId, callback){
   userId = String(userId);
-  movieId = String(movieId);
+  itemId = String(itemId);
   var finalSimilaritySum = 0.0;
   var prediction = 0.0;
   var similaritySet = [config.className, userId, 'similaritySet'].join(':');
-  var likedBySet = [config.className, movieId, 'liked'].join(':');
-  var dislikedBySet = [config.className, movieId, 'disliked'].join(':');
+  var likedBySet = [config.className, itemId, 'liked'].join(':');
+  var dislikedBySet = [config.className, itemId, 'disliked'].join(':');
   exports.similaritySum(similaritySet, likedBySet, function(result1){
     exports.similaritySum(similaritySet, dislikedBySet, function(result2){
       finalSimilaritySum = result1 - result2;
@@ -117,11 +117,11 @@ exports.updateRecommendationsFor = function(userId){
             });
           },
           function(err){
-            client.sdiff(tempSet, [config.className,userId,'liked'].join(":"), [config.className,userId,'disliked'].join(":"), function(err, movieIds){
-              async.each(movieIds,
-                function(movieId, callback){
-                  exports.predictFor(userId, movieId, function(score){
-                    scoreMap.push([score, movieId]);
+            client.sdiff(tempSet, [config.className,userId,'liked'].join(":"), [config.className,userId,'disliked'].join(":"), function(err, itemIds){
+              async.each(itemIds,
+                function(itemId, callback){
+                  exports.predictFor(userId, itemId, function(score){
+                    scoreMap.push([score, itemId]);
                     callback();
                   });
                 },
