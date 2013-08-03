@@ -14,7 +14,7 @@ Also I'm debating switching it to use the Neo4j graph database to take advantage
 
 ## Installation
 
-```bash
+``` bash
 npm install racooon
 ```
 
@@ -22,22 +22,25 @@ npm install racooon
 
 Raccoon only keeps track of the ratings from your users. All you have to do to get started is:
 
-* Install Raccoon
-```bash
+Install Raccoon
+``` bash
 npm install raccoon
 ```
-* Require raccoon in your node server
-```js
+
+Require raccoon in your node server
+``` js
 var raccoon = require('raccoon');
 ```
-* Add in ratings
-```js
+
+Add in ratings
+``` js
 raccoon.input.liked('gary_id', 'movie_id');
 raccoon.input.liked('gary_id', 'movie2_id');
 raccoon.input.liked('chris_id', 'movie_id');
 ```
-* Ask for recommendations
-```js
+
+Ask for recommendations
+``` js
 raccoon.recommendation.recommendFor('chris_id', function(results){
   // results will be an array of recommendations.
   // in this case it would contain movie 2
