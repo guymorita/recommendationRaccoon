@@ -67,7 +67,7 @@ var jaccardCoefficient = function(userId1, userId2, callback){
   });
 };
 
-exports.updateSimilarityFor = function(userId){
+exports.updateSimilarityFor = function(userId, callback){
   userId = String(userId);
   var similaritySet, userRatedMovieIds, movieLikedByUsers, movieDislikedByUsers, similarUserIds;
   similaritySet = [config.className,userId,'similaritySet'].join(":");
@@ -84,7 +84,9 @@ exports.updateSimilarityFor = function(userId){
       _.each(results, function(otherUserId, key){
         if (userId !== otherUserId){
           jaccardCoefficient(userId, otherUserId, function(result) {
-            client.zadd(similaritySet, result, otherUserId);
+            client.zadd(similaritySet, result, otherUserId, function(err){
+              callback();
+            });
           });
         }
       });
@@ -98,30 +100,31 @@ exports.predictFor = function(userId, movieId, callback){
   var finalSimilaritySum = 0.0;
   var prediction = 0.0;
   var similaritySet = [config.className,userId,'similaritySet'].join(':');
-  var likedBySet = [config.className, userId, 'liked'].join(':');
-  var dislikedBySet = [config.className, userId, 'disliked'].join(':');
-  similaritySum(similaritySet, likedBySet, function(result){
-    similaritySum(similaritySet, dislikedBySet, function(result2){
-      similaritySum = likedBySet - dislikedBySet;
-      client.scard(likedBySet, function(err, likedByCount){
-        client.scard(dislikedBySet, function(err, dislikedByCount){
-          prediction = similaritySum / parseFloat(likedByCount + dislikedCount);
-          if (isFinite(prediction)){
-            callback(prediction);
-          }
-        });
-      });
-    });
-  });
+  var likedBySet = [config.className, movieId, 'liked'].join(':');
+  var dislikedBySet = [config.className, movieId, 'disliked'].join(':');
+  // exports.similaritySum(similaritySet, likedBySet, function(result){
+  //   exports.similaritySum(similaritySet, dislikedBySet, function(result2){
+  //     exports.similaritySum = likedBySet - dislikedBySet;
+  //     client.scard(likedBySet, function(err, likedByCount){
+  //       client.scard(dislikedBySet, function(err, dislikedByCount){
+  //         prediction = exports.similaritySum / parseFloat(likedByCount + dislikedByCount);
+  //         if (isFinite(prediction)){
+  //           callback(prediction);
+  //         }
+  //       });
+  //     });
+  //   });
+  // });
+  callback(1);
 };
 
-exports.similaritySum = function(simSet, compSet, cb){
+exports.similaritySum = function(simSet, compSet, cb){ // trying to get the score from the similarity set given the userId from the comp set
   var similaritySum = 0.0;
-  client.smembers(compSet, function(err, results){
-    async.each(results,
-      function(score, callback){
-        client.zscore(simSet, id, function(err, score){
-          similaritySum += parseFloat(score);
+  client.smembers(compSet, function(err, userIds){
+    async.each(userIds,
+      function(userId, callback){
+        client.zscore(simSet, userId, function(err, zScore){
+          similaritySum += parseFloat(zScore);
           callback();
         });
       },
@@ -132,14 +135,75 @@ exports.similaritySum = function(simSet, compSet, cb){
 
 exports.updateRecommendationsFor = function(userId){
   userId = String(userId);
-  var nearest_neighbors = config.nearest_neighbors;
-  var ratedSets = [[config.className,userId,'liked'].join(":"),[config.className,userId,'disliked'].join(":")];
+  var setsToUnion = [];
+  var scoreMap = [];
+  // var ratedSets = [[config.className,userId,'liked'].join(":"),[config.className,userId,'disliked'].join(":")];
   var tempSet = [config.className, userId, 'tempSet'].join(":");
+  var tempDiffSet = [config.className, userId, 'tempDiffSet'].join(":");
   var similaritySet = [config.className, userId, 'similaritySet'].join(":");
   var recommendedSet = [config.className, userId, 'recommendedSet'].join(":");
-
-  // var mostSimilarUserIds =
+  client.zrevrange(similaritySet, 0, config.nearestNeighbors-1, function(err, mostSimilarUserIds){
+    client.zrange(similaritySet, 0, config.nearestNeighbors-1, function(err, leastSimilarUserIds){
+      _.each(mostSimilarUserIds, function(id, key){
+        setsToUnion.push([config.className,id,'liked'].join(":"));
+      });
+      _.each(leastSimilarUserIds, function(id, key){
+        setsToUnion.push([config.className,id,'disliked'].join(":"));
+      });
+      if (setsToUnion.length > 0){
+        async.each(setsToUnion,
+          function(set, callback){
+            client.sunionstore(tempSet, set, function(err){
+              callback();
+            });
+          },
+          function(err){
+            client.sdiff(tempSet, [config.className,userId,'liked'].join(":"), [config.className,userId,'disliked'].join(":"), function(err, movieIds){
+              async.each(movieIds,
+                function(id, callback){
+                  exports.predictFor(userId, id, function(score){
+                    scoreMap.push([score, id]);
+                    callback();
+                  });
+                },
+                function(err){
+                  async.each(scoreMap,
+                    function(scorePair, callback){
+                      client.zadd(recommendedSet, scorePair[0], scorePair[1], function(err, results){
+                        console.log('results', results);
+                        callback();
+                      });
+                    },
+                    function(err){
+                      client.del(tempSet, function(err){
+                        client.zcard(recommendedSet, function(err, length){
+                          client.zremrangebyrank(recommendedSet, 0, length-config.numOfRecsStore-1);
+                        });
+                      });
+                    }
+                  );
+                }
+              );
+            });
+          }
+        );
+        // });
+      }
+    });
+  });
 };
+
+
+
+//   async.each([1,2,3,4],
+//     function(score, callback){
+//       finalnum += score;
+//       callback();
+//     },
+//     function(err){console.log('finalnum', finalnum)}
+//   );
+//   // var mostSimilarUserIds =
+// };
 
 exports.topSimilarUsers = function(users, person1, callback, n){
   n = n || 5;
