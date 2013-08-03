@@ -1,16 +1,12 @@
 exports.starter = function(urlOfDB){
 
   var async = require('async'),
-  mongoose = require('mongoose');
-  _ = require('underscore');
-  algo = require('./algorithms.js');
+  mongoose = require('mongoose'),
+  _ = require('underscore'),
+  algo = require('./algorithms.js'),
   config = require('./config.js').config();
   input = require('./input.js').input();
 
-  var users = {};
-  var moviesArray = [];
-  var tempMovieArray = [];
-  var moviesHash = {};
   var headers;
 
   mongoose.connect(urlOfDB);
@@ -32,24 +28,7 @@ exports.starter = function(urlOfDB){
     Movie: Movie
   };
 
-  var fs = require('fs');
   var csv = require('csv');
-
-  var buildMovieList = function(userMovieObject, callback){
-    var movieArr = [];
-    var movieObj = {};
-    var movieName = {};
-    _.each(userMovieObject.movies, function(value, key){
-      movieName = moviesArray[Number(value.id)];
-      if (Number(value.value)>0){
-        movieObj['name'] = movieName;
-        movieObj['rating'] = Number(value.value);
-        movieArr.push(movieObj);
-        movieObj = {};
-      }
-    });
-    callback(movieArr);
-  };
 
   var insertMovie = function(movieName){
     var movieData = {
@@ -77,14 +56,14 @@ exports.starter = function(urlOfDB){
     User.findOne({name:userName}, function(err, userData){
       Movie.findOne({name:movieName}, function(err, movieData){
         if (rating > 3){
-          input.liked([config.className,userData._id].join(":"), movieData._id);
-          input.likedBy([config.className,movieData._id].join(":"), userData._id);
+          input.liked(userData._id, movieData._id);
+          input.likedBy(movieData._id, userData._id);
         } else {
-          input.disliked([config.className,userData._id].join(":"), movieData._id);
-          input.dislikedBy([config.className,movieData._id].join(":"), userData._id);
+          input.disliked(userData._id, movieData._id);
+          input.dislikedBy(movieData._id, userData._id);
         }
-        input.userList(config.className, userData._id);
-        input.movieList(config.className, movieData._id);
+        input.userList(userData._id);
+        input.itemList(movieData._id);
         algo.updateSimilarityFor(userData._id, function(){
           algo.updateRecommendationsFor(userData._id);
         });
@@ -93,9 +72,6 @@ exports.starter = function(urlOfDB){
   };
 
   return {
-    useee: users,
-    movee: moviesArray,
-    buildMovieList: buildMovieList,
     importCSV:function(callback){
       csv()
       .from.path(__dirname+'/movierecs.csv', { delimiter: ',', escape: '"' })
@@ -110,9 +86,6 @@ exports.starter = function(urlOfDB){
         }
       })
       .on('end', function(){
-        // client.quit(function (err, res) {
-        //     console.log("Exiting from quit command.");
-        // });
       })
       .on('error', function(error){
         console.log(error.message);

@@ -2,6 +2,7 @@ var redis = require("redis"),
     client = redis.createClient();
 var async = require('async');
 var config = require('./config.js').config();
+var _ = require('underscore');
 
 var jaccardCoefficient = function(userId1, userId2, callback){
   var similarity = 0,

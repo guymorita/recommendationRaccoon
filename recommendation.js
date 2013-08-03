@@ -1,14 +1,7 @@
-exports.raccoon = function(urlOfDB){
+exports.recommendation = function(){
 
-  var models = require('./starter.js').starter(urlOfDB),
-    mongoose = require('mongoose'),
-    algo = require('./algorithms.js');
-    config = require('./config.js').config();
-    input = require('./input.js').input();
 
   return {
-    models: models,
-
     recommendationForUser: function(userList, userName, callback){
       algo.getRecommendations(userList, userName, callback);
     },
@@ -21,10 +14,5 @@ exports.raccoon = function(urlOfDB){
       algo.jaccardCoefficient(userId1, userId2);
     }
 
-    // exports.mostLiked = function(){
-
-    // };
-
   };
 };
-
