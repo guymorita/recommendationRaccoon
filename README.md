@@ -1,17 +1,22 @@
 # recommend Raccoon
 
-A collaborative filtering based recommendation engine and NPM module built on top of Node.js and Mongoose (MongoDB). Currently using the Pearson product-moment correlation algorithm and I'll likely refactor it to use Python and/or Redis as Memcached. Also I'm debating switching it to use the Neo4j graph database to take advantage of the traversal abilities, breadthe/depth in finding recommendations and time complexity.
+A collaborative filtering based recommendation engine and NPM module built on top of Node.js and Redis. The engine uses the Jaccard coefficient to determine the similarity between users and k-nearest-neighbors to create recommendations. This module is useful for any with a database of users, a database of products/movies/items and the desire to give their users the ability to like/dislike and receive recommendations.
+
+Also I'm debating switching it to use the Neo4j graph database to take advantage of the traversal abilities, breadthe/depth in finding recommendations and time complexity.
 
 ## Requirements
 
 * Node.js 0.10.x
-* MongoDB, Mongoose
+* Redis
+* Async
+* Underscore
 
 ## Installation
 
 ``` bash
 npm install racooon
 ```
+
 
 ## Coming soon (now)
 
