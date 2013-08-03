@@ -3,48 +3,6 @@ var redis = require("redis"),
 var async = require('async');
 var config = require('./config.js').config();
 
-// Pearson product-moment correlation coefficient
-
-var pearsonCoefficient = function(users, person1, person2){
-  var commonMovies = {};
-  _.each(users[person1], function(value, key){
-    if(users[person2].hasOwnProperty(key)){
-      commonMovies[key]=1;
-    }
-  });
-  var n = _.size(commonMovies);
-  if (n === 0){
-    return 0;
-  }
-  // add up all preferences
-  var sum1 = _.reduce(commonMovies, function(memo, value, key){
-    return memo + users[person1][key];
-  }, 0);
-  var sum2 = _.reduce(commonMovies, function(memo, value, key){
-    return memo + users[person2][key];
-  }, 0);
-  // sum up all squares
-  var sum1Sq = _.reduce(commonMovies, function(memo, value, key){
-    return memo + Math.pow(users[person1][key],2);
-  }, 0);
-  var sum2Sq = _.reduce(commonMovies, function(memo, value, key){
-    return memo + Math.pow(users[person2][key],2);
-  }, 0);
-  // sum up the products of all the matches
-  var pSum = _.reduce(commonMovies, function(memo, value, key){
-    return memo + (users[person1][key]*users[person2][key]);
-  }, 0);
-  // calculate the pearson score
-  var num = pSum - (sum1*sum2/n);
-  var den = Math.sqrt((sum1Sq-Math.pow(sum1,2)/n)*(sum2Sq-Math.pow(sum2,2)/n));
-
-  if (den === 0 ){
-    return 0;
-  }
-  var r = num/den;
-  return r;
-};
-
 var jaccardCoefficient = function(userId1, userId2, callback){
   var similarity = 0,
   likedCount = 0,
@@ -116,7 +74,6 @@ exports.predictFor = function(userId, movieId, callback){
       });
     });
   });
-  // callback(1);
 };
 
 exports.similaritySum = function(simSet, compSet, cb){ // trying to get the score from the similarity set given the userId from the comp set
@@ -140,7 +97,6 @@ exports.updateRecommendationsFor = function(userId){
   userId = String(userId);
   var setsToUnion = [];
   var scoreMap = [];
-  // var ratedSets = [[config.className,userId,'liked'].join(":"),[config.className,userId,'disliked'].join(":")];
   var tempSet = [config.className, userId, 'tempSet'].join(":");
   var tempDiffSet = [config.className, userId, 'tempDiffSet'].join(":");
   var similaritySet = [config.className, userId, 'similaritySet'].join(":");
@@ -150,9 +106,9 @@ exports.updateRecommendationsFor = function(userId){
       _.each(mostSimilarUserIds, function(id, key){
         setsToUnion.push([config.className,id,'liked'].join(":"));
       });
-      _.each(leastSimilarUserIds, function(id, key){
-        setsToUnion.push([config.className,id,'disliked'].join(":"));
-      });
+      // _.each(leastSimilarUserIds, function(id, key){
+      //   setsToUnion.push([config.className,id,'disliked'].join(":"));
+      // });
       if (setsToUnion.length > 0){
         async.each(setsToUnion,
           function(set, callback){
@@ -165,7 +121,6 @@ exports.updateRecommendationsFor = function(userId){
               async.each(movieIds,
                 function(movieId, callback){
                   exports.predictFor(userId, movieId, function(score){
-                    // console.log('userid', score, movieId);
                     scoreMap.push([score, movieId]);
                     callback();
                   });
@@ -180,7 +135,7 @@ exports.updateRecommendationsFor = function(userId){
                     function(err){
                       client.del(tempSet, function(err){
                         client.zcard(recommendedSet, function(err, length){
-                          // client.zremrangebyrank(recommendedSet, 0, length-config.numOfRecsStore-1);
+                          client.zremrangebyrank(recommendedSet, 0, length-config.numOfRecsStore-1);
                         });
                       });
                     }
@@ -190,77 +145,8 @@ exports.updateRecommendationsFor = function(userId){
             });
           }
         );
-        // });
       }
     });
   });
 };
 
-
-
-//   async.each([1,2,3,4],
-//     function(score, callback){
-//       finalnum += score;
-//       callback();
-//     },
-//     function(err){console.log('finalnum', finalnum)}
-//   );
-//   // var mostSimilarUserIds =
-// };
-
-exports.topSimilarUsers = function(users, person1, callback, n){
-  n = n || 5;
-  var name, newObj;
-  var scores = [];
-  _.each(users, function(value, key){
-    newObj = {};
-    if (person1 !== key){
-      newObj[key] = pearsonCoefficient(users, person1, key);
-      scores.push(newObj);
-    }
-  });
-  scores.sort(sortArrayWithNestedObjects).reverse();
-  callback(scores.splice(0,n));
-};
-
-exports.getRecommendations = function(users, person1, callback){
-  var totals = {};
-  var simSums = {};
-  var rankings = [];
-  var sim, newObj;
-
-  for (var otherPerson in users){
-    if (person1 === otherPerson){
-      continue;
-    } else {
-      sim = pearsonCoefficient(users, person1, otherPerson);
-      if (sim <= 0){
-        continue;
-      }
-      _.each(users[otherPerson], function(rating, movieTitle){
-        if (!users[person1].hasOwnProperty(movieTitle) || users[person1][movieTitle] === 0){
-          totals[movieTitle] = totals[movieTitle] || 0;
-          totals[movieTitle] += users[otherPerson][movieTitle] * sim;
-          simSums[movieTitle] = simSums[movieTitle] || 0;
-          simSums[movieTitle] += sim;
-        }
-      });
-    }
-  }
-  _.each(totals, function(movieTotal, movie){
-    newObj = {};
-    newObj[movie] = (movieTotal / simSums[movie]);
-    rankings.push(newObj);
-  });
-  rankings.sort(sortArrayWithNestedObjects);
-  rankings.reverse();
-  callback(rankings);
-};
-
-function sortArrayWithNestedObjects(a,b) {
-  if (a[Object.keys(a)[0]] < b[Object.keys(b)[0]])
-     return -1;
-  if (a[Object.keys(a)[0]] > b[Object.keys(b)[0]])
-    return 1;
-  return 0;
-}
