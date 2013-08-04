@@ -4,6 +4,7 @@ exports.input = function(){
       client = redis.createClient();
       client.flushdb();
   var config = require('./config.js').config();
+  var algo = require('./algorithms.js');
 
   var userList = function(userId){
     client.sadd([config.className, 'userList'].join(':'), userId);
@@ -11,28 +12,41 @@ exports.input = function(){
   var itemList = function(itemId){
     client.sadd([config.className, 'itemList'].join(':'), itemId);
   };
+  var updateSequence = function(userId, itemId){
+    algo.updateSimilarityFor(userId, function(){
+      algo.updateWilsonScore(itemId, function(){
+        algo.updateRecommendationsFor(userId);
+      });
+    });
+  };
 
   return {
     userList: userList,
     itemList: itemList,
     liked: function(userId, itemId, callback){
-      client.sadd([config.className, userId,'liked'].join(':'), itemId, function(err){
-        callback();
-      });
-    },
-    likedBy: function(itemId, userId, callback){
-      client.sadd([config.className, itemId, 'liked'].join(':'), userId, function(err){
-        callback();
+      client.sismember([config.className, itemId, 'liked'].join(":"), userId, function(err, results){
+        if (results === 0){
+          client.zincrby([config.className, 'mostLiked'].join(":"), 1, itemId);
+        }
+        client.sadd([config.className, userId,'liked'].join(':'), itemId, function(err){
+          client.sadd([config.className, itemId, 'liked'].join(':'), userId, function(err){
+            updateSequence(userId, itemId);
+            callback();
+          });
+        });
       });
     },
     disliked: function(userId, itemId, callback){
-      client.sadd([config.className, userId, 'disliked'].join(':'), itemId, function(err){
-        callback();
-      });
-    },
-    dislikedBy: function(itemId, userId, callback){
-      client.sadd([config.className, itemId, 'disliked'].join(':'), userId, function(err){
-        callback();
+      client.sismember([config.className, itemId, 'disliked'].join(":"), userId, function(err, results){
+        if (results === 0){
+          client.zincrby([config.className, 'mostDisliked'].join(":"), 1, itemId);
+        }
+        client.sadd([config.className, userId, 'disliked'].join(':'), itemId, function(err){
+          client.sadd([config.className, itemId, 'disliked'].join(':'), userId, function(err){
+            updateSequence(userId, itemId);
+            callback();
+          });
+        });
       });
     }
   };
