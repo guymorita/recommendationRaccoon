@@ -5,9 +5,12 @@ exports.raccoon = function(urlOfDB){
     algo = require('./algorithms.js');
     config = require('./config.js').config();
     input = require('./input.js').input();
+    stat = require('./stat.js').stat();
 
   return {
     models: models,
+    input: input,
+    stat: stat,
 
     recommendationForUser: function(userList, userName, callback){
       algo.getRecommendations(userList, userName, callback);

@@ -56,11 +56,11 @@ exports.starter = function(urlOfDB){
     User.findOne({name:userName}, function(err, userData){
       Movie.findOne({name:movieName}, function(err, movieData){
         if (rating > 3){
-          input.liked(userData._id, movieData._id);
-          input.likedBy(movieData._id, userData._id);
+          input.liked(userData._id, movieData._id, function(){});
+          input.likedBy(movieData._id, userData._id, function(){});
         } else {
-          input.disliked(userData._id, movieData._id);
-          input.dislikedBy(movieData._id, userData._id);
+          input.disliked(userData._id, movieData._id, function(){});
+          input.dislikedBy(movieData._id, userData._id, function(){});
         }
         input.userList(userData._id);
         input.itemList(movieData._id);
