@@ -6,12 +6,6 @@ exports.input = function(){
   var config = require('./config.js').config();
   var algo = require('./algorithms.js');
 
-  var userList = function(userId){
-    client.sadd([config.className, 'userList'].join(':'), userId);
-  };
-  var itemList = function(itemId){
-    client.sadd([config.className, 'itemList'].join(':'), itemId);
-  };
   var updateSequence = function(userId, itemId){
     algo.updateSimilarityFor(userId, function(){
       algo.updateWilsonScore(itemId, function(){
@@ -21,8 +15,6 @@ exports.input = function(){
   };
 
   return {
-    userList: userList,
-    itemList: itemList,
     liked: function(userId, itemId, callback){
       client.sismember([config.className, itemId, 'liked'].join(":"), userId, function(err, results){
         if (results === 0){
