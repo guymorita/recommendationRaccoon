@@ -151,3 +151,28 @@ exports.updateRecommendationsFor = function(userId){
   });
 };
 
+exports.updateWilsonScore = function(itemId, callback){
+  var scoreBoard = [config.className, 'scoreBoard'].join(":");
+  var likedBySet = [config.className, itemId, 'liked'].join(':');
+  var dislikedBySet = [config.className, itemId, 'disliked'].join(':');
+  var z = 1.96;
+  var n, phat, score;
+  client.scard(likedBySet, function(err, likedResults){
+    client.scard(dislikedBySet, function(err, dislikedResults){
+      if ((likedResults + dislikedResults) > 0){
+        n = likedResults + dislikedResults;
+        phat = likedResults / parseFloat(n);
+        try {
+          score = (phat + z*z/(2*n) - z*Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n);
+        } catch (e) {
+          console.log(e.name + ": " + e.message);
+          score = 0.0;
+        }
+        client.zadd(scoreBoard, score, itemId, function(err){
+          callback();
+        });
+      }
+    });
+  });
+};
+
