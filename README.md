@@ -34,14 +34,14 @@ var raccoon = require('raccoon');
 
 Add in ratings
 ``` js
-raccoon.input.liked('gary_id', 'movie_id');
-raccoon.input.liked('gary_id', 'movie2_id');
-raccoon.input.liked('chris_id', 'movie_id');
+raccoon.liked('gary_id', 'movie_id');
+raccoon.liked('gary_id', 'movie2_id');
+raccoon.liked('chris_id', 'movie_id');
 ```
 
 Ask for recommendations
 ``` js
-raccoon.recommendation.recommendFor('chris_id', function(results){
+raccoon.recommendFor('chris_id', function(results){
   // results will be an array of recommendations.
   // in this case it would contain movie 2
 });
@@ -50,6 +50,28 @@ raccoon.recommendation.recommendFor('chris_id', function(results){
 ## Full Usage
 
 ### Inputs
+
+Likes / Dislikes:
+
+``` js
+
+raccoon.liked(userId, itemId, callback);
+
+raccoon.disliked(userId, itemId, callback);
+
+```
+
+### Stats / Recommendations
+
+
+``` js
+
+```
+
+### How it works
+
+
+
 
 
 ### Recommendations

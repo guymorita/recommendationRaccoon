@@ -2,11 +2,12 @@ exports.config = function(){
   var nearestNeighbors = 5;
   var className = 'movie';
   var numOfRecommendationsToStore = 30;
-  var starterContent = true;
+  var sampleContent = true;
 
   return {
     nearestNeighbors: nearestNeighbors,
     className: className,
-    numOfRecsStore: numOfRecommendationsToStore
+    numOfRecsStore: numOfRecommendationsToStore,
+    sampleContent: sampleContent
   };
 };
