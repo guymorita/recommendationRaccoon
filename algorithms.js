@@ -41,6 +41,9 @@ exports.updateSimilarityFor = function(userId, callback){
     similarUserIds = _.flatten(similarUserIds);
     client.sunion(similarUserIds, function(err, results){
       _.each(results, function(otherUserId, key){
+        if (userId === otherUserId){
+          callback();
+        }
         if (userId !== otherUserId){
           jaccardCoefficient(userId, otherUserId, function(result) {
             client.zadd(similaritySet, result, otherUserId, function(err){
@@ -94,7 +97,7 @@ exports.similaritySum = function(simSet, compSet, cb){ // trying to get the scor
   });
 };
 
-exports.updateRecommendationsFor = function(userId){
+exports.updateRecommendationsFor = function(userId, cb){
   userId = String(userId);
   var setsToUnion = [];
   var scoreMap = [];
@@ -136,7 +139,9 @@ exports.updateRecommendationsFor = function(userId){
                     function(err){
                       client.del(tempSet, function(err){
                         client.zcard(recommendedSet, function(err, length){
-                          client.zremrangebyrank(recommendedSet, 0, length-config.numOfRecsStore-1);
+                          client.zremrangebyrank(recommendedSet, 0, length-config.numOfRecsStore-1, function(err){
+                            cb();
+                          });
                         });
                       });
                     }
@@ -146,6 +151,8 @@ exports.updateRecommendationsFor = function(userId){
             });
           }
         );
+      } else {
+        cb();
       }
     });
   });

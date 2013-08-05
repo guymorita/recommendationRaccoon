@@ -2,14 +2,16 @@ exports.input = function(){
 
   var redis = require("redis"),
       client = redis.createClient();
-      client.flushdb();
+      // client.flushdb();
   var config = require('./config.js').config();
   var algo = require('./algorithms.js');
 
-  var updateSequence = function(userId, itemId){
+  var updateSequence = function(userId, itemId, callback){
     algo.updateSimilarityFor(userId, function(){
       algo.updateWilsonScore(itemId, function(){
-        algo.updateRecommendationsFor(userId);
+        algo.updateRecommendationsFor(userId, function(){
+          callback();
+        });
       });
     });
   };
@@ -22,8 +24,7 @@ exports.input = function(){
         }
         client.sadd([config.className, userId,'liked'].join(':'), itemId, function(err){
           client.sadd([config.className, itemId, 'liked'].join(':'), userId, function(err){
-            updateSequence(userId, itemId);
-            callback();
+            updateSequence(userId, itemId, callback);
           });
         });
       });
@@ -35,8 +36,7 @@ exports.input = function(){
         }
         client.sadd([config.className, userId, 'disliked'].join(':'), itemId, function(err){
           client.sadd([config.className, itemId, 'disliked'].join(':'), userId, function(err){
-            updateSequence(userId, itemId);
-            callback();
+            updateSequence(userId, itemId, callback);
           });
         });
       });
