@@ -6,6 +6,7 @@ exports.starter = function(urlOfDB){
   algo = require('../algorithms.js'),
   config = require('../config.js').config();
   input = require('../input.js').input();
+  stat = require('../stat.js').stat();
 
   var headers;
 
@@ -66,7 +67,49 @@ exports.starter = function(urlOfDB){
     });
   };
 
+  var buildLoginObject = function(userName, callback){
+    var loginObject = {};
+    findOrCreateUser(userName, function(userId){
+      User.find({}, function(err, userResults){
+        Movie.find({}, function(err, movieResults){
+          stat.allWatchedFor(userId, function(allWatched){
+            stat.recommendFor(userId, 30, function(recs){
+              loginObject = {
+                username: userName,
+                userId: userId,
+                alreadyWatched: allWatched,
+                allUsers: userResults,
+                allMovies: movieResults,
+                recommendations: recs
+              };
+              callback(loginObject);
+            });
+          });
+        });
+      });
+    });
+  };
+
+  var findOrCreateUser = function(username, callback){
+    User.findOne({name:username}, function(err, userData){
+      if (userData === null){
+        var newUser = {
+          name: username
+        };
+        var user = new User(newUser);
+        user.save(function(){
+          User.findOne({name:username}, function(err, newUserData){
+            callback(newUserData._id);
+          });
+        });
+      } else {
+        callback(userData._id);
+      }
+    });
+  };
+
   return {
+    buildLoginObject: buildLoginObject,
     importCSV:function(callback){
       csv()
       .from.path(__dirname+'/movierecs.csv', { delimiter: ',', escape: '"' })
