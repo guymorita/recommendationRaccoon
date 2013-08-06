@@ -58,19 +58,17 @@ raccoon.recommendFor('chrisId', function(results){
 Likes:
 ``` js
 raccoon.liked('userId', 'itemId', callback);
-// after a user likes an item, the rating data is immediately
-stored in Redis in various sets for the user/item, then the similarity,
-wilson score and recommendations are updated for that user. the callback
-is fired after the previous functions have finished.
+  // after a user likes an item, the rating data is immediately
+  // stored in Redis in various sets for the user/item, then the similarity,
+  // wilson score and recommendations are updated for that user. the callback
+  // is fired after the previous functions have finished.
 ```
 
 Dislikes:
 ``` js
 raccoon.disliked('userId', 'itemId', callback);
-// same as dislikes
+  // same as dislikes
 ```
-
-
 
 ### Recommendations
 
@@ -78,22 +76,26 @@ raccoon.disliked('userId', 'itemId', callback);
 raccoon.recommendFor('userId', 'numberOfRecs', function(results){
   callback(results);
   // returns an sorted array of itemIds which represent the top recommendations for
-  that individual user based on knn.
+  // that individual user based on knn.
+  // numberOfRecs is the number of recommendations you want to receive.
   // asking for recommendations queries the 'recommendedSet' sorted set for the user.
-  the movies in this set were calculated in advance then the user last rated something.
-  // ex. ['batmanId', 'superman', 'chipmunks']
+  // the movies in this set were calculated in advance then the user last rated
+  // something.
+  // ex. results = ['batmanId', 'supermanId', 'chipmunksId']
 };
 
 raccoon.mostSimilarUsers('userId', function(results){
   callback(results);
   // returns an array of the 'similaritySet' sorted set for the user which
-  represents their ranked similarity to all other users given the Jaccard Coefficient.
-  // ex. ['gary', ]
+  // represents their ranked similarity to all other users given the
+  // Jaccard Coefficient.
+  // ex. results = ['garyId', 'andrewId', 'jakeId']
 };
 
 raccoon.leastSimilarUsers('userId', function(results){
   callback(results);
   // same as mostSimilarUsers but the opposite.
+  // ex. results = ['timId', 'haoId', 'phillipId']
 };
 ```
 
@@ -105,8 +107,9 @@ Ratings:
 raccoon.bestRated(function(results){
   callback(results);
   // returns an array of the 'scoreBoard' sorted set which represents the global
-  ranking of items based on the Wilson Score Interval. in short it represents the
-  'best rated' items based on the ratio of likes/dislikes and cuts out outliers.
+  // ranking of items based on the Wilson Score Interval. in short it represents the
+  // 'best rated' items based on the ratio of likes/dislikes and cuts out outliers.
+  // ex. results = ['iceageId', 'sleeplessInSeattleId', 'theDarkKnightId']
 };
 
 raccoon.worstRated(function(results){
@@ -120,7 +123,7 @@ Liked/Disliked lists and counts:
 raccoon.mostLiked(function(results){
   callback(results);
   // returns an array of the 'mostLiked' sorted set which represents the global
-  number of likes for all the items. does not factor in dislikes.
+  // number of likes for all the items. does not factor in dislikes.
 };
 
 raccoon.mostDisliked(function(results){
