@@ -1,8 +1,8 @@
+/*jshint expr:true*/
+
 var raccoon = require('../raccoon.js').raccoon('mongodb://localhost/users');
 var redis = require("redis"),
     client = redis.createClient();
-var assert = require('chai').assert;
-var expect = require('chai').expect;
 
 describe('basic likes and dislikes', function(){
   beforeEach(function(done){
@@ -69,6 +69,39 @@ describe('recommendations', function(){
   });
 });
 
+// xdescribe('raccoon#liked', function(){
+// });
+
+// describe('raccoon#disliked', function(){
+//   before(function(){
+//     client.flushdb();
+//   });
+
+//   it('should only call the callback once', function(done) {
+//     raccoon.liked('chris', 'batman', function(){
+//       console.log('-----one chris level');
+//         raccoon.liked('chris', 'superman', function(){
+//           console.log('-------two chris levels');
+//           raccoon.disliked('chris', 'chipmunks', function(){
+//             console.log('-------three chris levels');
+//             raccoon.liked('max', 'batman', function(){
+//               console.log('--------four max levels');
+//               raccoon.liked('greg', 'batman', function(){
+//                 console.log('--------five greg levels');
+//                 raccoon.liked('larry', 'batman', function(){
+//                   console.log('--------six larry levels');
+//                   raccoon.liked('larry', 'iceage', function(){
+//                   console.log('--------seven larry levels');
+//                 });
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
+
 describe('stats1', function(){
   before(function(done){
     client.flushdb();
@@ -84,9 +117,11 @@ describe('stats1', function(){
                       raccoon.disliked('tuhin', 'batman', function(){
                         raccoon.disliked('tuhin', 'superman', function(){
                           raccoon.disliked('tuhin', 'chipmunks', function(){
+                            var noop = function(){};
                             for (var i = 0; i < 25; i++){
-                              raccoon.liked('user'+i, 'batman', function(){});
+                              raccoon.liked('user'+i, 'batman', noop);
                             }
+                            // done(); // TODO: Should be called here
                           });
                         });
                       });
@@ -99,7 +134,7 @@ describe('stats1', function(){
         });
       });
     });
-    setTimeout(done, 500);
+    setTimeout(done, 500); // TODO: Remove
   });
   it('should have batman as the bestRated even though iceage has only likes', function(done){
     raccoon.bestRated(function(bestRated){
@@ -113,34 +148,34 @@ describe('stats1', function(){
       done();
     });
   });
-  xit('should have batman as the most liked and superman as second', function(done){
+  it('should have batman as the most liked and superman as second', function(done){
     raccoon.mostLiked(function(mostLiked){
       assert.equal(mostLiked[0], 'batman');
       assert.equal(mostLiked[1], 'superman');
       done();
     });
   });
-  xit('should have chipmunks as the most disliked', function(done){
+  it('should have chipmunks as the most disliked', function(done){
     raccoon.mostDisliked(function(mostDisliked){
       console.log('mostDisliked', mostDisliked);
       assert.equal(mostDisliked[0], 'chipmunks');
       done();
     });
   });
-  xit('should show most similar users accurately', function(done){
+  it('should show most similar users accurately', function(done){
     raccoon.mostSimilarUsers('chris', function(similarUsers){
       console.log('similarUsers', similarUsers);
       assert.equal(similarUsers[0], 'greg');
       done();
     });
   });
-  xit('should show least similar users accurately', function(done){
+  it('should show least similar users accurately', function(done){
     raccoon.leastSimilarUsers('chris', function(leastSimilarUsers){
       assert.equal(leastSimilarUsers[0], 'tuhin');
       done();
     });
   });
-  xit('should have an accurate list of users who liked an item', function(done){
+  it('should have an accurate list of users who liked an item', function(done){
     raccoon.likedBy('superman', function(listOfUsers){
       console.log('listOfUsers', listOfUsers);
       assert.include(listOfUsers, 'chris');
@@ -148,7 +183,7 @@ describe('stats1', function(){
       done();
     });
   });
-  xit('should have an accurate number of users who liked an item', function(done){
+  it('should have an accurate number of users who liked an item', function(done){
     raccoon.likedCount('batman', function(numUsers){
       console.log('likedCount batman', numUsers);
       assert.equal(numUsers, 29);
