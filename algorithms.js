@@ -26,7 +26,7 @@ var jaccardCoefficient = function(userId1, userId2, callback){
   });
 };
 
-exports.updateSimilarityFor = function(userId, callback){
+exports.updateSimilarityFor = function(userId, cb){
   userId = String(userId);
   var similaritySet, userRatedItemIds, itemLikedByUsers, itemDislikedByUsers, similarUserIds;
   similaritySet = [config.className,userId,'similaritySet'].join(":");
@@ -40,18 +40,23 @@ exports.updateSimilarityFor = function(userId, callback){
     }
     similarUserIds = _.flatten(similarUserIds);
     client.sunion(similarUserIds, function(err, results){
-      _.each(results, function(otherUserId, key){
-        if (userId === otherUserId){
-          callback();
-        }
-        if (userId !== otherUserId){
-          jaccardCoefficient(userId, otherUserId, function(result) {
-            client.zadd(similaritySet, result, otherUserId, function(err){
-              callback();
+      async.each(results,
+        function(otherUserId, callback){
+          if (results.length === 1 || userId === otherUserId){
+            callback();
+          }
+          if (userId !== otherUserId){
+            jaccardCoefficient(userId, otherUserId, function(result) {
+              client.zadd(similaritySet, result, otherUserId, function(err){
+                callback();
+              });
             });
-          });
+          }
+        },
+        function(err){
+          cb();
         }
-      });
+      );
     });
   });
 };
@@ -110,9 +115,11 @@ exports.updateRecommendationsFor = function(userId, cb){
       _.each(mostSimilarUserIds, function(id, key){
         setsToUnion.push([config.className,id,'liked'].join(":"));
       });
-      // _.each(leastSimilarUserIds, function(id, key){
-      //   setsToUnion.push([config.className,id,'disliked'].join(":"));
-      // });
+      // if (config.factorLeastSimilarLeastLiked){
+      //   _.each(leastSimilarUserIds, function(id, key){
+      //     setsToUnion.push([config.className,id,'disliked'].join(":"));
+      //   });
+      // }
       if (setsToUnion.length > 0){
         async.each(setsToUnion,
           function(set, callback){
