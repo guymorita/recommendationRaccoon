@@ -10,10 +10,10 @@ describe('basic likes and dislikes', function(){
     raccoon.liked('chris', 'batman', function(){
       raccoon.liked('larry', 'batman', function(){
         raccoon.disliked('greg', 'batman', function(){
+          done();
         });
       });
     });
-    setTimeout(done, 300);
   });
   describe('basic like', function(){
     it('should validate a user has been added after a rating', function(done){
@@ -121,7 +121,7 @@ describe('stats1', function(){
                             for (var i = 0; i < 25; i++){
                               raccoon.liked('user'+i, 'batman', noop);
                             }
-                            // done(); // TODO: Should be called here
+                            done();
                           });
                         });
                       });
@@ -134,7 +134,6 @@ describe('stats1', function(){
         });
       });
     });
-    setTimeout(done, 500); // TODO: Remove
   });
   it('should have batman as the bestRated even though iceage has only likes', function(done){
     raccoon.bestRated(function(bestRated){
