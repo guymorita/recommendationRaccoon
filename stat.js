@@ -1,4 +1,4 @@
-exports.stat = function(){
+  exports.stat = function(){
 
   var redis = require("redis"),
       client = redis.createClient();
@@ -20,6 +20,11 @@ exports.stat = function(){
         callback(results);
       });
     },
+    bestRatedWithScores: function(numOfRatings, callback){
+      client.zrevrange([config.className,'scoreBoard'].join(":"), 0, numOfRatings, 'withscores', function(err, results){
+        callback(results);
+      });
+    },
     mostLiked: function(callback){
       client.zrevrange([config.className, 'mostLiked'].join(":"), 0, -1, function(err, results){
         callback(results);
@@ -34,7 +39,7 @@ exports.stat = function(){
 
     },
     mostSimilarUsers: function(userId, callback){
-      client.zrevrange([config.className, userId, 'similaitySet'].join(":"), 0, -1, function(err, results){
+      client.zrevrange([config.className, userId, 'similaritySet'].join(":"), 0, -1, function(err, results){
         callback(results);
       });
     },
@@ -70,6 +75,11 @@ exports.stat = function(){
     },
     allDislikedFor: function(userId, callback){
       client.smembers([config.className, userId, 'disliked'].join(":"), function(err, results){
+        callback(results);
+      });
+    },
+    allWatchedFor: function(userId, callback){
+      client.sunion([config.className, userId, 'liked'].join(":"), [config.className, userId, 'liked'].join(":"), function(err, results){
         callback(results);
       });
     }
