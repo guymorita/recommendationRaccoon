@@ -18,7 +18,13 @@
   },
   "devDependencies": {
     "chai": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "grunt-mocha-test": "~0.6.2",
+    "grunt-contrib-jshint": "~0.6.2",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt": "~0.4.1",
+    "sinon-chai": "~2.4.0",
+    "sinon": "~1.7.3"
   },
   "licenses": [
     {

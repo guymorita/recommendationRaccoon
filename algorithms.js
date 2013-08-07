@@ -85,7 +85,7 @@ exports.predictFor = function(userId, itemId, callback){
   });
 };
 
-exports.similaritySum = function(simSet, compSet, cb){ // trying to get the score from the similarity set given the userId from the comp set
+exports.similaritySum = function(simSet, compSet, cb){
   var similarSum = 0.0;
   client.smembers(compSet, function(err, userIds){
     async.each(userIds,

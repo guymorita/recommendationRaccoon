@@ -58,8 +58,14 @@ exports.starter = function(urlOfDB){
       Movie.findOne({name:movieName}, function(err, movieData){
         if (rating > 3){
           input.liked(userData._id, movieData._id, function(){});
-        } else {
+        } else if (rating < 3) {
           input.disliked(userData._id, movieData._id, function(){});
+        } else {
+          if (function(){return Math.floor(Math.random()*1.5)}===1){
+            input.liked(userData._id, movieData._id, function(){});
+          } else {
+            input.disliked(userData._id, movieData._id, function(){});
+          }
         }
         // input.userList(userData._id);
         // input.itemList(movieData._id);

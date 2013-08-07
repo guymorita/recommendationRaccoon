@@ -3,11 +3,13 @@ exports.config = function(){
   var className = 'movie';
   var numOfRecommendationsToStore = 30;
   var sampleContent = true;
+  var factorLeastSimilarLeastLiked = false;
 
   return {
     nearestNeighbors: nearestNeighbors,
     className: className,
     numOfRecsStore: numOfRecommendationsToStore,
-    sampleContent: sampleContent
+    sampleContent: sampleContent,
+    factorLeastSimilarLeastLiked: factorLeastSimilarLeastLiked
   };
 };

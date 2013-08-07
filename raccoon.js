@@ -1,12 +1,10 @@
 exports.raccoon = function(urlOfDB){
 
-  var algo = require('./algorithms.js'),
-  input = require('./input.js').input(),
-  stat = require('./stat.js').stat(),
-  config = require('./config.js').config();
-  if (config.sampleContent){
-    var models = require('./sampleContent/starter.js').starter(urlOfDB);
-  }
+  var config = require('./config.js').config(),
+      models = config.sampleContent ? require('./sampleContent/starter.js').starter(urlOfDB) : undefined,
+      algo = require('./algorithms.js'),
+      input = require('./input.js').input(),
+      stat = require('./stat.js').stat();
 
   return {
     models: models,
@@ -17,6 +15,7 @@ exports.raccoon = function(urlOfDB){
     recommendFor: stat.recommendFor,
     bestRated: stat.bestRated,
     worstRated: stat.worstRated,
+    bestRatedWithScores: stat.bestRatedWithScores,
     mostLiked: stat.mostLiked,
     mostDisliked: stat.mostDisliked,
     usersWhoLikedAlsoLiked: stat.usersWhoLikedAlsoLiked,
@@ -31,4 +30,3 @@ exports.raccoon = function(urlOfDB){
     allWatchedFor: stat.allWatchedFor
   };
 };
-

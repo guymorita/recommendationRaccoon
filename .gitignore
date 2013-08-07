@@ -1,8 +1,4 @@
 .DS_Store
 .npmignore
-sandbox.js
-sandbox.html
-movierecs orig.csv
-SpecRunner.html
 /lib
-karma.conf.js
+/node_modules

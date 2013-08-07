@@ -26,24 +26,24 @@ npm install racooon
 
 Raccoon keeps track of the ratings and recommendations from your users. All you have to do to get started is:
 
-Install Raccoon:
+#### Install Raccoon:
 ``` bash
 npm install raccoon
 ```
 
-Require raccoon in your node server:
+#### Require raccoon in your node server:
 ``` js
 var raccoon = require('raccoon');
 ```
 
-Add in ratings:
+#### Add in ratings:
 ``` js
 raccoon.liked('garyId', 'movieId');
 raccoon.liked('garyId', 'movie2Id');
 raccoon.liked('chrisId', 'movieId');
 ```
 
-Ask for recommendations:
+#### Ask for recommendations:
 ``` js
 raccoon.recommendFor('chrisId', function(results){
   // results will be an array of ranked recommendations
@@ -55,7 +55,7 @@ raccoon.recommendFor('chrisId', function(results){
 
 ### Inputs
 
-Likes:
+#### Likes:
 ``` js
 raccoon.liked('userId', 'itemId', callback);
   // after a user likes an item, the rating data is immediately
@@ -64,7 +64,7 @@ raccoon.liked('userId', 'itemId', callback);
   // is fired after the previous functions have finished.
 ```
 
-Dislikes:
+#### Dislikes:
 ``` js
 raccoon.disliked('userId', 'itemId', callback);
   // same as dislikes
@@ -75,20 +75,21 @@ raccoon.disliked('userId', 'itemId', callback);
 ``` js
 raccoon.recommendFor('userId', 'numberOfRecs', function(results){
   callback(results);
-  // returns an sorted array of itemIds which represent the top recommendations for
-  // that individual user based on knn.
+  // returns an ranked sorted array of itemIds which represent the top recommendations
+  // for that individual user based on knn.
   // numberOfRecs is the number of recommendations you want to receive.
   // asking for recommendations queries the 'recommendedSet' sorted set for the user.
-  // the movies in this set were calculated in advance then the user last rated
+  // the movies in this set were calculated in advance when the user last rated
   // something.
   // ex. results = ['batmanId', 'supermanId', 'chipmunksId']
 };
 
 raccoon.mostSimilarUsers('userId', function(results){
   callback(results);
-  // returns an array of the 'similaritySet' sorted set for the user which
+  // returns an array of the 'similaritySet' ranked sorted set for the user which
   // represents their ranked similarity to all other users given the
-  // Jaccard Coefficient.
+  // Jaccard Coefficient. the value is between -1 and 1. -1 means that the
+  // user is the exact opposite, 1 means they're exactly the same.
   // ex. results = ['garyId', 'andrewId', 'jakeId']
 };
 
@@ -102,7 +103,7 @@ raccoon.leastSimilarUsers('userId', function(results){
 
 ### User Statistics
 
-Ratings:
+#### Ratings:
 ``` js
 raccoon.bestRated(function(results){
   callback(results);
@@ -118,7 +119,7 @@ raccoon.worstRated(function(results){
 };
 ```
 
-Liked/Disliked lists and counts:
+#### Liked/Disliked lists and counts:
 ``` js
 raccoon.mostLiked(function(results){
   callback(results);
@@ -171,7 +172,7 @@ raccoon.allWatchedFor('userId', function(results){
 
 ### Jaccard Coefficient for Similarity
 
-There are many ways to gauge the likeness of two users. The original implementation of recommendation Raccoon used the Pearson Coefficient which was good for measuring discrete values in a small range (i.e. 1-5 stars). However, to optimize for quicker calcuations and a simplier interface, recommendation Raccoon instead uses the Jaccard Coefficient which is useful for measuring binary rating data (i.e. like/dislike). Many top companies have gone this route such as Youtube because users were primary rating things 4-5 or 1. The choice to use the Jaccard's instead of Pearson's was largely inspired by David Celis who designed Recommendable, the top recommendation engine on Rails. The Jaccard Coefficient also pairs very well with Redis which is able to union/diff sets of like/dislikes at O(N).
+There are many ways to gauge the likeness of two users. The original implementation of recommendation Raccoon used the Pearson Coefficient which was good for measuring discrete values in a small range (i.e. 1-5 stars). However, to optimize for quicker calcuations and a simplier interface, recommendation Raccoon instead uses the Jaccard Coefficient which is useful for measuring binary rating data (i.e. like/dislike). Many top companies have gone this route such as Youtube because users were primarily rating things 4-5 or 1. The choice to use the Jaccard's instead of Pearson's was largely inspired by David Celis who designed Recommendable, the top recommendation engine on Rails. The Jaccard Coefficient also pairs very well with Redis which is able to union/diff sets of like/dislikes at O(N).
 
 ### K-Nearest Neighbors Algorithm for Recommendations
 
@@ -183,7 +184,7 @@ If you've ever been to Amazon or another site with tons of reviews, you've proba
 
 ### Redis
 
-When combined with hiredis, redis can get/set at ~40,000 operations/second using 50 concurrent connections without pipelining. In short, Redis is extremely fast at set math and is a natural fit for a recommendation engine of this scale. Redis in integral to many top companies such as Twitter which uses it for their Timeline.
+When combined with hiredis, redis can get/set at ~40,000 operations/second using 50 concurrent connections without pipelining. In short, Redis is extremely fast at set math and is a natural fit for a recommendation engine of this scale. Redis is integral to many top companies such as Twitter which uses it for their Timeline (substituted Memcached).
 
 ## Links
 

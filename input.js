@@ -2,7 +2,7 @@ exports.input = function(){
 
   var redis = require("redis"),
       client = redis.createClient();
-      // client.flushdb();
+      client.flushdb();
   var config = require('./config.js').config();
   var algo = require('./algorithms.js');
 
