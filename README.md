@@ -24,11 +24,16 @@ npm install racooon
 
 ## Quickstart
 
-Raccoon keeps track of the ratings and recommendations from your users. All you have to do to get started is:
+Raccoon keeps track of the ratings and recommendations from your users. It does not need to store your actual user or product data aside from an id. All you have to do to get started is:
 
 #### Install Raccoon:
 ``` bash
 npm install raccoon
+```
+
+#### Install Redis:
+``` bash
+npm install redis
 ```
 
 #### Require raccoon in your node server:

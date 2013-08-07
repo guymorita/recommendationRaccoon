@@ -5,6 +5,7 @@ exports.raccoon = function(urlOfDB){
       algo = require('./algorithms.js'),
       input = require('./input.js').input(),
       stat = require('./stat.js').stat();
+      require('./globalreq.js')();
 
   return {
     models: models,

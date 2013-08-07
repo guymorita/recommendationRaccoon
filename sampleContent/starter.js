@@ -4,7 +4,7 @@ exports.starter = function(urlOfDB){
   mongoose = require('mongoose'),
   _ = require('underscore'),
   algo = require('../algorithms.js'),
-  config = require('../config.js').config();
+  // config = require('../config.js').config();
   input = require('../input.js').input();
   stat = require('../stat.js').stat();
 

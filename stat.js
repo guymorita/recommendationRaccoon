@@ -1,7 +1,6 @@
   exports.stat = function(){
 
-  var redis = require("redis"),
-      client = redis.createClient();
+  // var redis = require("redis");
   var config = require('./config.js').config();
 
   return {

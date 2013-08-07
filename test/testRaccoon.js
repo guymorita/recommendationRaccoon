@@ -1,8 +1,8 @@
 /*jshint expr:true*/
 
-var raccoon = require('../raccoon.js').raccoon('mongodb://localhost/users');
-var redis = require("redis"),
-    client = redis.createClient();
+// var raccoon = require('../raccoon.js').raccoon('mongodb://localhost/users');
+// var redis = require("redis"),
+//     client = redis.createClient();
 
 describe('basic likes and dislikes', function(){
   beforeEach(function(done){

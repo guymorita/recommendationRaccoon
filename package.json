@@ -2,7 +2,7 @@
   "name": "raccoon",
   "author": "Guy Morita",
   "description": "A Collaborative Filtering Recommendation Engine for Node.js utilizing Redis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/guymorita/recommendationRaccoon.git"

@@ -1,8 +1,7 @@
-var redis = require("redis"),
-    client = redis.createClient();
-var async = require('async');
-var config = require('./config.js').config();
-var _ = require('underscore');
+// var redis = require("redis"),
+    var async = require('async'),
+    config = require('./config.js').config(),
+    _ = require('underscore');
 
 var jaccardCoefficient = function(userId1, userId2, callback){
   var similarity = 0,
@@ -76,8 +75,9 @@ exports.predictFor = function(userId, itemId, callback){
         client.scard(dislikedBySet, function(err, dislikedByCount){
           prediction = finalSimilaritySum / parseFloat(likedByCount + dislikedByCount);
           if (isFinite(prediction)){
-            console.log('prediction', userId, prediction);
             callback(prediction);
+          } else {
+            callback(0.0);
           }
         });
       });
@@ -115,11 +115,11 @@ exports.updateRecommendationsFor = function(userId, cb){
       _.each(mostSimilarUserIds, function(id, key){
         setsToUnion.push([config.className,id,'liked'].join(":"));
       });
-      // if (config.factorLeastSimilarLeastLiked){
-      //   _.each(leastSimilarUserIds, function(id, key){
-      //     setsToUnion.push([config.className,id,'disliked'].join(":"));
-      //   });
-      // }
+      if (config.factorLeastSimilarLeastLiked){
+        _.each(leastSimilarUserIds, function(id, key){
+          setsToUnion.push([config.className,id,'disliked'].join(":"));
+        });
+      }
       if (setsToUnion.length > 0){
         async.each(setsToUnion,
           function(set, callback){

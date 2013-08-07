@@ -1,10 +1,8 @@
 exports.input = function(){
 
-  var redis = require("redis"),
-      client = redis.createClient();
-      client.flushdb();
-  var config = require('./config.js').config();
-  var algo = require('./algorithms.js');
+  // var redis = require("redis"),
+      var config = require('./config.js').config(),
+      algo = require('./algorithms.js');
 
   var updateSequence = function(userId, itemId, callback){
     algo.updateSimilarityFor(userId, function(){
