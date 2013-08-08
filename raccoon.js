@@ -1,14 +1,13 @@
 exports.raccoon = function(){
 
   var config = require('./config.js').config(),
-      models = config.sampleContent ? require('./sampleContent/starter.js').starter() : undefined,
       algo = require('./algorithms.js'),
       input = require('./input.js').input(),
       stat = require('./stat.js').stat();
       require('./globalreq.js')();
 
   return {
-    models: models,
+    config: config,
     input: input,
     stat: stat,
     liked: input.liked,
