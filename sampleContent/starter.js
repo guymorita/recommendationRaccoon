@@ -6,7 +6,8 @@ exports.starter = function(urlOfDB){
   _ = require('underscore'),
   algo = require('../algorithms.js'),
   input = require('../input.js').input(),
-  stat = require('../stat.js').stat();
+  stat = require('../stat.js').stat(),
+  csv = require('csv');
 
   var headers;
 
@@ -35,8 +36,6 @@ exports.starter = function(urlOfDB){
     User: User,
     Movie: Movie
   };
-
-  var csv = require('csv');
 
   var insertMovie = function(movieName){
     var movieData = {
