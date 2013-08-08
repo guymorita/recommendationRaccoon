@@ -1,28 +1,35 @@
 exports.starter = function(urlOfDB){
 
   var async = require('async'),
+  config = require('../config.js').config(),
   mongoose = require('mongoose'),
   _ = require('underscore'),
   algo = require('../algorithms.js'),
-  // config = require('../config.js').config();
-  input = require('../input.js').input();
+  input = require('../input.js').input(),
   stat = require('../stat.js').stat();
 
   var headers;
 
-  mongoose.connect(urlOfDB);
+  if (config.localSetup === true){
+    mongoose.connect(config.localMongoDbURL);
+  } else {
+    mongoose.connect(config.remoteMongoDbURL);
+  }
 
   var userSchema = mongoose.Schema({
     name: String
   });
   var User = mongoose.model('User', userSchema);
-  User.find().remove({});
 
   var movieSchema = mongoose.Schema({
     name: String
   });
   var Movie = mongoose.model('Movie', movieSchema);
-  Movie.find().remove({});
+
+  if (config.flushDBsOnStart){
+    User.find().remove({});
+    Movie.find().remove({});
+  }
 
   module.exports = {
     User: User,
