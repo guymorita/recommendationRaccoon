@@ -6,7 +6,9 @@ Also I'm debating switching it to use the Neo4j graph database to take advantage
 
 ## Demo App
 
-mosaic.nodejitsu.com
+<a href="https://mosaic.nodejitsu.com" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
+url: <a href="http://mosaic.nodejitsu.com" target="_blank">http://mosaic.nodejitsu.com</a>
+code: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
 
 ## Requirements
 
@@ -54,6 +56,27 @@ raccoon.recommendFor('chrisId', function(results){
   // results will be an array of ranked recommendations
   // in this case it would contain movie2
 });
+```
+
+## config.js
+
+``` js
+nearestNeighbors: 5, // number of neighbors you want to compare a user against
+className: 'movie', // prefix for your items (used for redis)
+numOfRecsStore: 30, // number of recommendations to store per user
+sampleContent: true, // if you want to use the sample movie rating content
+factorLeastSimilarLeastLiked: false, // if you want to factor in items that
+  // users least similar didn't like
+localMongoDbURL: 'mongodb://localhost/users', // local mongo DB url
+remoteMongoDbURL: process.env.MONGO_HOSTAUTH, // remote mongo DB url
+  // this should include all auth info
+localRedisPort: 6379, // local redis port
+localRedisURL: '127.0.0.1', // local redis url
+remoteRedisPort: 12000, // remove redis port
+remoteRedisURL: process.env.REDIS_HOST, // remote redis url
+remoteRedisAuth: process.env.REDIS_AUTH, // remote redis auth
+flushDBsOnStart: true, // whether you want to flush the db's on first startup
+localSetup: true // IMPORTANT. whether you want to use local or remote databases
 ```
 
 ## Full Usage
@@ -194,3 +217,6 @@ When combined with hiredis, redis can get/set at ~40,000 operations/second using
 ## Links
 
 * Code: 'git clone git://github.com/guymorita/recommendationRaccoon.git'
+* NPM: 'https://npmjs.org/package/raccoon'
+* Demo App: 'http://mosaic.nodejitsu.com'
+* Demo App repo: 'https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo'
