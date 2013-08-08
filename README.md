@@ -6,9 +6,9 @@ Also I'm debating switching it to use the Neo4j graph database to take advantage
 
 ## Demo App
 
-<a href="https://mosaic.nodejitsu.com" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
-url: <a href="http://mosaic.nodejitsu.com" target="_blank">http://mosaic.nodejitsu.com</a>
-code: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
+<a href="https://mosaic.nodejitsu.com" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a></br>
+demo url: <a href="http://mosaic.nodejitsu.com" target="_blank">http://mosaic.nodejitsu.com</a></br>
+demo repo: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
 
 ## Requirements
 
@@ -217,6 +217,6 @@ When combined with hiredis, redis can get/set at ~40,000 operations/second using
 ## Links
 
 * Code: 'git clone git://github.com/guymorita/recommendationRaccoon.git'
-* NPM: 'https://npmjs.org/package/raccoon'
+* NPM Module: 'https://npmjs.org/package/raccoon'
 * Demo App: 'http://mosaic.nodejitsu.com'
 * Demo App repo: 'https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo'
