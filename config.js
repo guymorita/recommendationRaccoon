@@ -14,6 +14,6 @@ exports.config = function(){
     remoteRedisURL: process.env.REDIS_HOST,
     remoteRedisAuth: process.env.REDIS_AUTH,
     flushDBsOnStart: true,
-    localSetup: false
+    localSetup: true
   };
 };

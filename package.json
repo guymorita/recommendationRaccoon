@@ -14,19 +14,28 @@
   "dependencies": {
     "async": ">= 0.1.22",
     "redis": ">=0.8.x",
-    "underscore": "1.x.x"
+    "underscore": "1.x.x",
+    "grunt": "~0.4.1"
   },
   "devDependencies": {
+    "grunt-cli": "~0.1.7",
+    "grunt": "~0.4.1",
     "chai": "*",
     "mocha": "*",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.7",
     "grunt-mocha-test": "~0.6.2",
     "grunt-contrib-jshint": "~0.6.2",
     "grunt-contrib-watch": "~0.5.1",
     "grunt-mocha-cov": "~0.0.4",
     "sinon-chai": "~2.4.0",
     "sinon": "~1.7.3"
+  },
+  "scripts": {
+    "blanket": {
+      "pattern": [
+        "source"
+      ]
+    },
+    "test": "grunt test"
   },
   "licenses": [
     {

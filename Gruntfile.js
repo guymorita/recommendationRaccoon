@@ -10,9 +10,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    meta: {
-      pkg: grunt.file.readJSON('package.json')
-    },
+    pkg: grunt.file.readJSON('package.json'),
 
     jshint: {
       all: [
@@ -41,7 +39,7 @@ module.exports = function(grunt) {
         }
       },
       options: {
-        reporter: 'spec',
+        reporter: 'min',
         ignoreLeaks: false,
         files: [files.tests]
       }
