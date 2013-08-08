@@ -1,14 +1,14 @@
 # recommendationRaccoon (raccoon)
 
-A collaborative filtering based recommendation engine and NPM module built on top of Node.js and Redis. The engine uses the Jaccard coefficient to determine the similarity between users and k-nearest-neighbors to create recommendations. This module is useful for anyone with a database of users, a database of products/movies/items and the desire to give their users the ability to like/dislike and receive recommendations based on similar users.
+A collaborative filtering based recommendation engine and NPM module built on top of Node.js and Redis. The engine uses the Jaccard coefficient to determine the similarity between users and k-nearest-neighbors to create recommendations. This module is useful for anyone with a database of users, a database of products/movies/items and the desire to give their users the ability to like/dislike and receive recommendations based on similar users. Raccoon takes care of all the recommendation and rating logic. It can be paired with any database as it does not keep track of any user/item information besides a unique ID.
 
 Also I'm debating switching it to use the Neo4j graph database to take advantage of the traversal abilities, breadthe/depth in finding recommendations and time complexity of updating recommendations.
 
 ## Demo App
 
-<a href="https://mosaic.nodejitsu.com" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a></br>
-demo url: <a href="http://mosaic.nodejitsu.com" target="_blank">http://mosaic.nodejitsu.com</a></br>
-demo repo: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
+<a href="https://mosaic.nodejitsu.com" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
+#### demo url: <a href="http://mosaic.nodejitsu.com" target="_blank">http://mosaic.nodejitsu.com</a>
+#### demo repo: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
 
 ## Requirements
 
@@ -33,14 +33,15 @@ Raccoon keeps track of the ratings and recommendations from your users. It does 
 npm install raccoon
 ```
 
-#### Install Redis:
+#### Install / Boot Redis:
 ``` bash
 npm install redis
+redis-server
 ```
 
 #### Require raccoon in your node server:
 ``` js
-var raccoon = require('raccoon');
+var raccoon = require('raccoon').raccoon();
 ```
 
 #### Add in ratings:
@@ -52,8 +53,8 @@ raccoon.liked('chrisId', 'movieId');
 
 #### Ask for recommendations:
 ``` js
-raccoon.recommendFor('chrisId', function(results){
-  // results will be an array of ranked recommendations
+raccoon.recommendFor('chrisId', 10, function(results){
+  // results will be an array of x ranked recommendations for chris
   // in this case it would contain movie2
 });
 ```
@@ -110,7 +111,7 @@ raccoon.recommendFor('userId', 'numberOfRecs', function(results){
   // the movies in this set were calculated in advance when the user last rated
   // something.
   // ex. results = ['batmanId', 'supermanId', 'chipmunksId']
-};
+});
 
 raccoon.mostSimilarUsers('userId', function(results){
   callback(results);
@@ -119,13 +120,13 @@ raccoon.mostSimilarUsers('userId', function(results){
   // Jaccard Coefficient. the value is between -1 and 1. -1 means that the
   // user is the exact opposite, 1 means they're exactly the same.
   // ex. results = ['garyId', 'andrewId', 'jakeId']
-};
+});
 
 raccoon.leastSimilarUsers('userId', function(results){
   callback(results);
   // same as mostSimilarUsers but the opposite.
   // ex. results = ['timId', 'haoId', 'phillipId']
-};
+});
 ```
 
 
@@ -139,12 +140,12 @@ raccoon.bestRated(function(results){
   // ranking of items based on the Wilson Score Interval. in short it represents the
   // 'best rated' items based on the ratio of likes/dislikes and cuts out outliers.
   // ex. results = ['iceageId', 'sleeplessInSeattleId', 'theDarkKnightId']
-};
+});
 
 raccoon.worstRated(function(results){
   callback(results);
   // same as bestRated but in reverse.
-};
+});
 ```
 
 #### Liked/Disliked lists and counts:
@@ -153,47 +154,47 @@ raccoon.mostLiked(function(results){
   callback(results);
   // returns an array of the 'mostLiked' sorted set which represents the global
   // number of likes for all the items. does not factor in dislikes.
-};
+});
 
 raccoon.mostDisliked(function(results){
   callback(results);
   // same as mostLiked but the opposite.
-};
+});
 
 raccoon.likedBy('itemId', function(results){
   callback(results);
   // returns an array which lists all the users who liked that item.
-};
+});
 
 raccoon.likedCount('itemId', function(results){
   callback(results);
   // returns the number of users who have liked that item.
-};
+});
 
 raccoon.dislikedBy('itemId', function(results){
   callback(results);
   // same as likedBy but for disliked.
-};
+});
 
 raccoon.dislikedCount('itemId', function(results){
   callback(results);
   // same as likedCount but for disliked.
-};
+});
 
 raccoon.allLikedFor('userId', function(results){
   callback(results);
   // returns an array of all the items that user has liked.
-};
+});
 
 raccoon.allDislikedFor('userId', function(results){
   callback(results);
   // returns an array of all the items that user has disliked.
-};
+});
 
 raccoon.allWatchedFor('userId', function(results){
   callback(results);
   // returns an array of all the items that user has liked or disliked.
-};
+});
 ```
 
 ## Recommendation Engine Components
@@ -214,9 +215,26 @@ If you've ever been to Amazon or another site with tons of reviews, you've proba
 
 When combined with hiredis, redis can get/set at ~40,000 operations/second using 50 concurrent connections without pipelining. In short, Redis is extremely fast at set math and is a natural fit for a recommendation engine of this scale. Redis is integral to many top companies such as Twitter which uses it for their Timeline (substituted Memcached).
 
+## Features to Contribute
+
+* Clustering of users. Integrate some ML algorithms that run in the background to cluster users. Similarity could be run on clusters instead of users.
+* Create a branch that's built for the Neo4j graph database.
+* Create a system to measure the quality of recommendations.
+* Add more input functionality. Bookmarks.
+* Ability for users to remove likes/dislikes
+* Build more querying functions. ex. likes in common with, items in common with.
+
+## Run tests
+
+``` bash
+grunt test
+```
+
 ## Links
 
 * Code: 'git clone git://github.com/guymorita/recommendationRaccoon.git'
 * NPM Module: 'https://npmjs.org/package/raccoon'
 * Demo App: 'http://mosaic.nodejitsu.com'
 * Demo App repo: 'https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo'
+
+##
