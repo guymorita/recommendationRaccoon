@@ -31,7 +31,21 @@ module.exports = function(grunt) {
         src: [files.tests]
       }
     },
-
+    mochacov: {
+      test: {}, // Run with the spec testrunner
+      coverage: {
+        options: {
+          coveralls: {
+            serviceName: 'travis-ci'
+          }
+        }
+      },
+      options: {
+        reporter: 'spec',
+        ignoreLeaks: false,
+        files: 'test/**/*.js'
+      }
+    },
     watch: {
       tests: {
         files: _.toArray(files),
@@ -49,8 +63,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-mocha-cov');
+
 
   // Tasks
+  grunt.registerTask('travis', [ 'jshint', 'mochacov:coverage' ]);
   grunt.registerTask('test', ['jshint:all', 'mochaTest']);
 
   // Default task (runs when running `grunt` without arguments)
