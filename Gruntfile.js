@@ -43,7 +43,7 @@ module.exports = function(grunt) {
       options: {
         reporter: 'spec',
         ignoreLeaks: false,
-        files: 'test/**/*.js'
+        files: [files.tests]
       }
     },
     watch: {

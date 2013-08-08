@@ -2,7 +2,7 @@
   "name": "raccoon",
   "author": "Guy Morita",
   "description": "A Collaborative Filtering Recommendation Engine for Node.js utilizing Redis",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/guymorita/recommendationRaccoon.git"
@@ -19,10 +19,12 @@
   "devDependencies": {
     "chai": "*",
     "mocha": "*",
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.7",
     "grunt-mocha-test": "~0.6.2",
     "grunt-contrib-jshint": "~0.6.2",
     "grunt-contrib-watch": "~0.5.1",
-    "grunt": "~0.4.1",
+    "grunt-mocha-cov": "~0.0.4",
     "sinon-chai": "~2.4.0",
     "sinon": "~1.7.3"
   },
