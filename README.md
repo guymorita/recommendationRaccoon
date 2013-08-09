@@ -238,5 +238,3 @@ grunt test
 * NPM Module: 'https://npmjs.org/package/raccoon'
 * Demo App: 'http://mosaic.nodejitsu.com'
 * Demo App repo: 'https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo'
-
-##

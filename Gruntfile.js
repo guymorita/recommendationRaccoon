@@ -19,16 +19,6 @@ module.exports = function(grunt) {
         files.tests
       ]
     },
-
-    mochaTest: {
-      test: {
-        options: {
-          reporter: 'min',
-          require: 'test/common'
-        },
-        src: [files.tests]
-      }
-    },
     mochacov: {
       test: {}, // Run with the spec testrunner
       coverage: {
@@ -39,7 +29,7 @@ module.exports = function(grunt) {
         }
       },
       options: {
-        reporter: 'min',
+        reporter: 'spec',
         ignoreLeaks: false,
         files: [files.tests]
       }
@@ -60,13 +50,11 @@ module.exports = function(grunt) {
   // Load third-party modules
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-mocha-cov');
-
 
   // Tasks
   grunt.registerTask('travis', [ 'jshint', 'mochacov:coverage' ]);
-  grunt.registerTask('test', ['jshint:all', 'mochaTest']);
+  grunt.registerTask('test', ['jshint:all', 'mochacov:test']);
 
   // Default task (runs when running `grunt` without arguments)
   grunt.registerTask('default', ['test']);
