@@ -1,9 +1,12 @@
 /*jshint expr:true*/
 
+var blanket = require("blanket")({
+   /* options are passed as an argument object to the require statement */
+   "pattern": "../"
+   });
 var raccoon = require('../raccoon.js').raccoon('mongodb://localhost/users');
 var redis = require("redis"),
     client = redis.createClient();
-    require("blanket");
 
 describe('basic likes and dislikes', function(){
   beforeEach(function(done){

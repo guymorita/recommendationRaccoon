@@ -7,22 +7,18 @@
     "type": "git",
     "url": "https://github.com/guymorita/recommendationRaccoon.git"
   },
-  "main": "./raccoon.js",
-  "engines": {
-    "node": "*"
-  },
   "dependencies": {
     "async": "~0.2.9",
     "redis": "~0.8.4",
-    "underscore": "~1.5.1",
-    "grunt": "~0.4.1",
-    "mocha-lcov-reporter": "0.0.1",
-    "blanket": "~1.1.5"
+    "underscore": "~1.5.1"
   },
   "devDependencies": {
+    "travis-cov": "~0.2.4",
+    "grunt": "~0.4.1",
+    "blanket": "~1.1.5",
+    "mocha-lcov-reporter": "0.0.1",
     "coveralls": "~2.1.0",
     "grunt-cli": "~0.1.7",
-    "grunt": "~0.4.1",
     "chai": "*",
     "mocha": "*",
     "grunt-mocha-test": "~0.6.2",
@@ -39,6 +35,10 @@
       ]
     },
     "test": "grunt test"
+  },
+  "main": "./raccoon.js",
+  "engines": {
+    "node": "*"
   },
   "licenses": [
     {
