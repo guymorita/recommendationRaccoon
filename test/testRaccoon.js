@@ -1,6 +1,18 @@
 /*jshint expr:true*/
+var chai = require('chai');
+var assert = chai.assert;
+var expect = chai.expect;
+var sinon = require('sinon');
 
-var raccoon = require('../raccoon.js').raccoon('mongodb://localhost/users');
+// Chai plugins
+chai.use(require('sinon-chai'));
+
+var blanket = require("blanket")({
+   /* options are passed as an argument object to the require statement */
+   "pattern": "../"
+ });
+
+var raccoon = require('../raccoon.js').raccoon();
 var redis = require("redis"),
     client = redis.createClient();
 
@@ -46,29 +58,53 @@ describe('callbacks', function(){
   });
 });
 
-// describe('recommendations', function(){
-//   beforeEach(function(done){
-//     client.flushdb();
-//     raccoon.liked('chris', 'batman', function(){
-//       raccoon.liked('larry', 'batman', function(){
-//         raccoon.liked('chris', 'superman', function(){
-//           raccoon.liked('max', 'batman', function(){
-//             raccoon.liked('max', 'superman', function(){
-//               done();
-//             });
-//           });
-//         });
-//       });
-//     });
-//   });
-//   it('should recommend a movie if a similar user liked it', function(done){
-//     raccoon.recommendFor('larry', 5, function(recs){
-//       console.log('rec movies for larry', recs);
-//       assert.equal(recs[0], 'superman');
-//       done();
-//     });
-//   });
-// });
+describe('recommendations', function(){
+  before(function(done){
+    client.flushdb();
+    raccoon.liked('chris', 'batman', function(){
+      raccoon.liked('chris', 'superman', function(){
+        raccoon.disliked('chris', 'chipmunks', function(){
+          raccoon.liked('max', 'batman', function(){
+            raccoon.disliked('max', 'chipmunks', function(){
+              raccoon.liked('greg', 'batman', function(){
+                raccoon.liked('greg', 'superman', function(){
+                  raccoon.liked('larry', 'batman', function(){
+                    raccoon.liked('larry', 'iceage', function(){
+                      raccoon.disliked('tuhin', 'batman', function(){
+                        raccoon.disliked('tuhin', 'superman', function(){
+                          raccoon.disliked('tuhin', 'chipmunks', function(){
+                            raccoon.disliked('kristina', 'batman', function(){
+                              raccoon.disliked('kristina', 'superman', function(){
+                                raccoon.disliked('andre', 'superman', function(){
+                                  done();
+                                });
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+  it('should recommend a movie if a similar user liked it', function(done){
+    raccoon.recommendFor('andre', 5, function(recs){
+      assert.equal(recs[0], 'batman');
+      done();
+    });
+  });
+  // it('should not recommend a movie that people opposite liked', function(done){
+  //   raccoon.recommendFor('andre', 5, function(recs){
+  //     assert.notEqualequal(recs[0], 'chipmunks');
+  //     done();
+  //   });
+  });
 
 // xdescribe('raccoon#liked', function(){
 // });
