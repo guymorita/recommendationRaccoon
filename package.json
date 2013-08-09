@@ -17,7 +17,8 @@
     "underscore": "~1.5.1",
     "grunt": "~0.4.1",
     "coveralls": "~2.1.0",
-    "mocha-lcov-reporter": "0.0.1"
+    "mocha-lcov-reporter": "0.0.1",
+    "blanket": "~1.1.5"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.7",
