@@ -12,7 +12,7 @@ var blanket = require("blanket")({
    "pattern": "../"
  });
 
-var raccoon = require('../raccoon.js').raccoon();
+var raccoon = require('raccoon').raccoon();
 var redis = require("redis"),
     client = redis.createClient();
 

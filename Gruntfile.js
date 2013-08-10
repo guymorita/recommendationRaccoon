@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   'use strict';
 
   var files = {
-    src: './*.js',
+    src: 'lib/**/*.js',
     tests: 'test/**/*.js'
   };
 
