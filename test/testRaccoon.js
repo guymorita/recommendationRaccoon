@@ -7,12 +7,13 @@ var sinon = require('sinon');
 // Chai plugins
 chai.use(require('sinon-chai'));
 
-var blanket = require("blanket")({
-   /* options are passed as an argument object to the require statement */
-   "pattern": "../"
- });
+var blanket = require("blanket");
+// ({
+//     options are passed as an argument object to the require statement
+//    // "pattern": "../lib/"
+//  });
 
-var raccoon = require('raccoon').raccoon();
+var raccoon = require('../lib/raccoon.js').raccoon();
 var redis = require("redis"),
     client = redis.createClient();
 

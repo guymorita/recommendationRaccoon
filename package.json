@@ -32,9 +32,8 @@
   },
   "scripts": {
     "blanket": {
-      "pattern": [
-        "source"
-      ]
+      "pattern": "lib",
+      "data-cover-never": "node_modules"
     },
     "test": "grunt test"
   },
