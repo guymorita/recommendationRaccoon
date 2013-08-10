@@ -1,7 +1,6 @@
 exports.input = function(){
 
-  // var redis = require("redis"),
-      var config = require('./config.js').config(),
+  var config = require('./config.js').config(),
       algo = require('./algorithms.js');
 
   var updateSequence = function(userId, itemId, callback){

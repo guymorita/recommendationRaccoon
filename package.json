@@ -2,7 +2,7 @@
   "name": "raccoon",
   "author": "Guy Morita",
   "description": "A Collaborative Filtering Recommendation Engine for Node.js utilizing Redis",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/guymorita/recommendationRaccoon.git"
@@ -10,11 +10,10 @@
   "dependencies": {
     "async": "~0.2.9",
     "redis": "~0.8.4",
-    "underscore": "~1.5.1",
-    "mocha-lcov-reporter": "0.0.1",
-    "coveralls": "~2.1.0"
+    "underscore": "~1.5.1"
   },
   "devDependencies": {
+    "coveralls": "~2.1.0",
     "travis-cov": "~0.2.4",
     "blanket": "~1.1.5",
     "mocha-lcov-reporter": "0.0.1",

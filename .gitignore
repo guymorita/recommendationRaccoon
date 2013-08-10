@@ -1,4 +1,4 @@
 .DS_Store
 .npmignore
-/lib
-/node_modules
+lib
+node_modules

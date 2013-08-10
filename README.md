@@ -199,6 +199,7 @@ raccoon.allWatchedFor('userId', function(results){
 });
 ```
 
+
 ## Recommendation Engine Components
 
 ### Jaccard Coefficient for Similarity
@@ -217,6 +218,8 @@ If you've ever been to Amazon or another site with tons of reviews, you've proba
 
 When combined with hiredis, redis can get/set at ~40,000 operations/second using 50 concurrent connections without pipelining. In short, Redis is extremely fast at set math and is a natural fit for a recommendation engine of this scale. Redis is integral to many top companies such as Twitter which uses it for their Timeline (substituted Memcached).
 
+
+
 ## Features to Contribute
 
 * Clustering of users. Integrate some ML algorithms that run in the background to cluster users. Similarity could be run on clusters instead of users.
@@ -230,7 +233,14 @@ When combined with hiredis, redis can get/set at ~40,000 operations/second using
 
 ``` bash
 grunt test
+grunt mochacov:coverage
 ```
+
+## Tech Stack
+
+recommendationRaccoon is written fully in Javascript. It utilizes the asyncronous, non-blocking features of Node.js for the core of app. The recommendations and ratings are stored in an intermediate data store called Redis which performs extremely well compared to database systems that write every change to disk before committing the transaction. Redis holds the entire dataset in memory. For the actual handling of the parallel asyncronous functions, raccoon uses the async library for Node.js.
+
+For testing, raccoon uses Mocha Chai as a testing suite, automates it with Grunt.js and gets test coverage with Blanket.js/Travis-CI/Coveralls.
 
 ## Links
 
