@@ -6,8 +6,10 @@ An easy-to-use collaborative filtering based recommendation engine and NPM modul
 
 Also I'm debating switching it to use the Neo4j graph database to take advantage of the traversal abilities, breadthe/depth in finding recommendations and time complexity of updating recommendations.
 
+[![Coverage Status](https://coveralls.io/repos/guymorita/recommendationRaccoon/badge.png?branch=master)](https://coveralls.io/r/guymorita/recommendationRaccoon?branch=master)
+
 <a href="https://nodei.co/npm/raccoon/"><img src="https://nodei.co/npm/raccoon.png?downloads=true"></a>
-<a href='https://coveralls.io/r/guymorita/recommendationRaccoon?branch=master'><img src='https://coveralls.io/repos/guymorita/recommendationRaccoon/badge.png?branch=master' alt='Coverage Status' /></a>
+
 
 ## Demo App
 
