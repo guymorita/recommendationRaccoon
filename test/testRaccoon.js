@@ -12,8 +12,10 @@ var blanket = require("blanket");
 //     options are passed as an argument object to the require statement
 //    // "pattern": "../lib/"
 //  });
-
+var config = require('../lib/config.js').config();
+    config.localSetup = true;
 var raccoon = require('../lib/raccoon.js').raccoon();
+
 var redis = require("redis"),
     client = redis.createClient();
 
@@ -107,39 +109,6 @@ describe('recommendations', function(){
   //   });
   });
 
-// xdescribe('raccoon#liked', function(){
-// });
-
-// describe('raccoon#disliked', function(){
-//   before(function(){
-//     client.flushdb();
-//   });
-
-//   it('should only call the callback once', function(done) {
-//     raccoon.liked('chris', 'batman', function(){
-//       console.log('-----one chris level');
-//         raccoon.liked('chris', 'superman', function(){
-//           console.log('-------two chris levels');
-//           raccoon.disliked('chris', 'chipmunks', function(){
-//             console.log('-------three chris levels');
-//             raccoon.liked('max', 'batman', function(){
-//               console.log('--------four max levels');
-//               raccoon.liked('greg', 'batman', function(){
-//                 console.log('--------five greg levels');
-//                 raccoon.liked('larry', 'batman', function(){
-//                   console.log('--------six larry levels');
-//                   raccoon.liked('larry', 'iceage', function(){
-//                   console.log('--------seven larry levels');
-//                 });
-//               });
-//             });
-//           });
-//         });
-//       });
-//     });
-//   });
-// });
-
 describe('stats1', function(){
   before(function(done){
     client.flushdb();
@@ -199,19 +168,6 @@ describe('stats1', function(){
       done();
     });
   });
-  // it('should show most similar users accurately', function(done){
-  //   raccoon.mostSimilarUsers('chris', function(similarUsers){
-  //     console.log('similarUsers', similarUsers);
-  //     assert.equal(similarUsers[0], 'greg');
-  //     done();
-  //   });
-  // });
-  // it('should show least similar users accurately', function(done){
-  //   raccoon.leastSimilarUsers('chris', function(leastSimilarUsers){
-  //     assert.equal(leastSimilarUsers[0], 'tuhin');
-  //     done();
-  //   });
-  // });
   it('should have an accurate list of users who liked an item', function(done){
     raccoon.likedBy('superman', function(listOfUsers){
       // console.log('listOfUsers', listOfUsers);
@@ -260,12 +216,43 @@ describe('stats1', function(){
       done();
     });
   });
-  // it('should list all a users rated items', function(done){
-  //   raccoon.allWatchedFor('max', function(itemList){
-  //     console.log('max watched', itemList);
-  //     expect(itemList).to.include('batman');
-  //     expect(itemList).to.include('chipmunks');
-  //     done();
-  //   });
-  // });
+  it('should list all a users rated items', function(done){
+    raccoon.allWatchedFor('max', function(itemList){
+      expect(itemList).to.include('batman');
+      expect(itemList).to.include('chipmunks');
+      done();
+    });
+  });
+  it('should not have similar users before updating', function(done){
+    raccoon.mostSimilarUsers('chris', function(similarUsers){
+      assert.equal(similarUsers[0], undefined);
+      done();
+    });
+  });
+  it('should not have dissimilar users before updating', function(done){
+    raccoon.leastSimilarUsers('chris', function(leastSimilarUsers){
+      assert.equal(leastSimilarUsers[0], undefined);
+      done();
+    });
+  });
+});
+
+describe('db connections', function(){
+  it('should connect to a remove db successfully', function(done){
+    client.flushdb();
+    client.quit();
+    config.localSetup = false;
+    config.remoteRedisPort = 6379;
+    config.remoteRedisURL = '127.0.0.1';
+    config.remoteRedisAuth = 1111;
+    raccoon.liked('chris', 'batman', function(){
+      raccoon.allLikedFor('chris', function(itemList){
+        expect(itemList).to.include('batman');
+        client.flushdb();
+        client.end();
+        config.localSetup = true;
+        done();
+      });
+    });
+  });
 });
