@@ -7,10 +7,9 @@ var sinon = require('sinon');
 // Chai plugins
 chai.use(require('sinon-chai'));
 
-var blanket = require("blanket");
-// ({
-//     options are passed as an argument object to the require statement
-//    // "pattern": "../lib/"
+// var blanket = require("blanket")({
+//     // options are passed as an argument object to the require statement
+//    "pattern": "../lib/"
 //  });
 var config = require('../lib/config.js').config();
     config.localSetup = true;

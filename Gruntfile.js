@@ -20,11 +20,15 @@ module.exports = function(grunt) {
       ]
     },
     mochacov: {
-      test: {}, // Run with the spec testrunner
+      test: {
+        src: [files.tests]
+      }, // Run with the spec testrunner
       coverage: {
+        src: [files.tests],
         options: {
           coveralls: {
-            serviceName: 'travis-ci'
+            serviceName: 'travis-ci',
+            repoToken: process.env.COVERALLS_REPO_TOKEN
           }
         }
       },
