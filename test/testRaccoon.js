@@ -11,9 +11,9 @@ chai.use(require('sinon-chai'));
 //     // options are passed as an argument object to the require statement
 //    "pattern": "../lib/"
 //  });
-var config = require('../lib/config.js').config();
+var config = require('../lib/config.js');
     config.localSetup = true;
-var raccoon = require('../lib/raccoon.js').raccoon();
+var raccoon = require('../lib/raccoon.js');
 
 var redis = require("redis"),
     client = redis.createClient();
