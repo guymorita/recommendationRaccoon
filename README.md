@@ -47,8 +47,15 @@ redis-server
 ```
 
 #### Require raccoon in your node server:
+You can choose to let Raccoon create its own Redis client using a config.js file.
 ``` js
-var raccoon = require('raccoon');
+var raccoon = require('raccoon')(); // Use the config.js file
+```
+
+Alternatively, you can pass in an existing Redis client, which is required when using Heroku. In this case, you can disregard the config.js file.
+``` js
+var client = require('redis').createClient();
+var raccoon = require('raccoon')(client); // Use existing redis client
 ```
 
 #### Add in ratings:
