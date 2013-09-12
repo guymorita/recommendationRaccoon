@@ -48,7 +48,7 @@ redis-server
 
 #### Require raccoon in your node server:
 ``` js
-var raccoon = require('raccoon').raccoon();
+var raccoon = require('raccoon');
 ```
 
 #### Add in ratings:
