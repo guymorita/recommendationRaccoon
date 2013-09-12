@@ -13,7 +13,7 @@ chai.use(require('sinon-chai'));
 //  });
 var config = require('../lib/config.js');
     config.localSetup = true;
-var raccoon = require('../lib/raccoon.js');
+var raccoon = require('../lib/raccoon.js')();
 
 var redis = require("redis"),
     client = redis.createClient();
@@ -244,6 +244,19 @@ describe('db connections', function(){
     config.remoteRedisPort = 6379;
     config.remoteRedisURL = '127.0.0.1';
     config.remoteRedisAuth = 1111;
+    raccoon.liked('chris', 'batman', function(){
+      raccoon.allLikedFor('chris', function(itemList){
+        expect(itemList).to.include('batman');
+        client.flushdb();
+        client.end();
+        config.localSetup = true;
+        done();
+      });
+    });
+  });
+
+  it('should connect to a provided db successfully', function(done){
+    var raccoon = require('../lib/raccoon.js')(client);
     raccoon.liked('chris', 'batman', function(){
       raccoon.allLikedFor('chris', function(itemList){
         expect(itemList).to.include('batman');
