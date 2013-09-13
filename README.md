@@ -80,7 +80,7 @@ remoteMongoDbURL: process.env.MONGO_HOSTAUTH, // remote mongo DB url
   // this should include all auth info
 localRedisPort: 6379, // local redis port
 localRedisURL: '127.0.0.1', // local redis url
-remoteRedisPort: 12000, // remove redis port
+remoteRedisPort: process.env.REDIS_PORT || 12000, // remote redis port
 remoteRedisURL: process.env.REDIS_HOST, // remote redis url
 remoteRedisAuth: process.env.REDIS_AUTH, // remote redis auth
 flushDBsOnStart: true, // whether you want to flush the db's on first startup
