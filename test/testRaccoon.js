@@ -239,6 +239,7 @@ describe('stats1', function(){
 describe('db connections', function(){
   it('should connect to a remove db successfully', function(done){
     client.flushdb();
+    client.end();
     client.quit();
     config.localSetup = false;
     config.remoteRedisPort = 6379;
