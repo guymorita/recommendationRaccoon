@@ -1,3 +1,4 @@
 .DS_Store
 .npmignore
 node_modules
+dumb.rdb

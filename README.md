@@ -1,6 +1,6 @@
 # recommendationRaccoon (raccoon)
 
-<img align="right" src="http://i44.tinypic.com/6yku9i.png">
+<img align="right" src="http://i42.tinypic.com/2d12qli.png">
 
 An easy-to-use collaborative filtering based recommendation engine and NPM module built on top of Node.js and Redis. The engine uses the Jaccard coefficient to determine the similarity between users and k-nearest-neighbors to create recommendations. This module is useful for anyone with a database of users, a database of products/movies/items and the desire to give their users the ability to like/dislike and receive recommendations based on similar users. Raccoon takes care of all the recommendation and rating logic. It can be paired with any database as it does not keep track of any user/item information besides a unique ID.
 
@@ -48,7 +48,7 @@ redis-server
 
 #### Require raccoon in your node server:
 ``` js
-var raccoon = require('raccoon').raccoon();
+var raccoon = require('raccoon');
 ```
 
 #### Add in ratings:
@@ -80,7 +80,7 @@ remoteMongoDbURL: process.env.MONGO_HOSTAUTH, // remote mongo DB url
   // this should include all auth info
 localRedisPort: 6379, // local redis port
 localRedisURL: '127.0.0.1', // local redis url
-remoteRedisPort: 12000, // remove redis port
+remoteRedisPort: process.env.REDIS_PORT || 12000, // remote redis port
 remoteRedisURL: process.env.REDIS_HOST, // remote redis url
 remoteRedisAuth: process.env.REDIS_AUTH, // remote redis auth
 flushDBsOnStart: true, // whether you want to flush the db's on first startup
