@@ -2,7 +2,7 @@
   "name": "raccoon",
   "author": "Guy Morita",
   "description": "A Collaborative Filtering Recommendation Engine for Node.js utilizing Redis",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/guymorita/recommendationRaccoon.git"
@@ -29,7 +29,7 @@
     "sinon": "1.7.3",
     "grunt-blanket-mocha": "0.2.0"
   },
-  "scripts": {
+  "config": {
     "blanket": {
       "pattern": "lib",
       "data-cover-never": "node_modules"
