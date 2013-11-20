@@ -60,6 +60,39 @@ describe('callbacks', function(){
   });
 });
 
+describe('accurate recommendations', function(){
+  before(function(done){
+    client.flushdb();
+    raccoon.liked('ChristianB', 'Typical', function(){
+      raccoon.liked('ChristianB', 'Value7', function(){
+        raccoon.liked('malbery', 'Typical', function(){
+          raccoon.liked('malbery', 'Value1', function(){
+            raccoon.liked('malbery', 'Value2', function(){
+              raccoon.liked('malbery', 'Value3', function(){
+                raccoon.liked('malbery', 'Value4', function(){
+                  raccoon.liked('malbery', 'Value5', function(){
+                    raccoon.liked('malbery', 'Value6', function(){
+                      raccoon.liked('malbery', 'Value7', function(){
+                        done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+  it('should not have recommendations for malbery', function(done){
+    raccoon.recommendFor('malbery', 5, function(recs){
+      assert.equal(recs[0], undefined);
+      done();
+    });
+  });
+});
+
 describe('recommendations', function(){
   before(function(done){
     client.flushdb();
@@ -106,7 +139,8 @@ describe('recommendations', function(){
   //     assert.notEqualequal(recs[0], 'chipmunks');
   //     done();
   //   });
-  });
+  // });
+});
 
 describe('stats1', function(){
   before(function(done){

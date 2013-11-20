@@ -13,8 +13,8 @@ Also I'm debating switching it to use the Neo4j graph database to take advantage
 
 ## Demo App
 
-<a href="https://mosaic.nodejitsu.com" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
-#### demo url: <a href="http://mosaic.nodejitsu.com" target="_blank">http://mosaic.nodejitsu.com</a>
+<a href="https://mosaic.jit.su" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
+#### demo url: <a href="http://mosaic.jit.su" target="_blank">http://mosaic.jit.su</a>
 #### demo repo: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
 
 ## Requirements
@@ -251,5 +251,5 @@ For testing, raccoon uses Mocha Chai as a testing suite, automates it with Grunt
 
 * Code: 'git clone git://github.com/guymorita/recommendationRaccoon.git'
 * NPM Module: 'https://npmjs.org/package/raccoon'
-* Demo App: 'http://mosaic.nodejitsu.com'
+* Demo App: 'http://mosaic.jit.su'
 * Demo App repo: 'https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo'
