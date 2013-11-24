@@ -79,10 +79,10 @@ raccoon.recommendFor('chrisId', 10, function(results){
 ``` js
 // these are the default values but you can change them
 
-raccoon.nearestNeighbors = 5;  // number of neighbors you want to compare a user against
-raccoon.className = 'movie';  // prefix for your items (used for redis)
-raccoon.numOfRecsStore = 30;  // number of recommendations to store per user
-raccoon.factorLeastSimilarLeastLiked = false;  // if you want to factor in items that
+raccoon.config.nearestNeighbors = 5;  // number of neighbors you want to compare a user against
+raccoon.config.className = 'movie';  // prefix for your items (used for redis)
+raccoon.config.numOfRecsStore = 30;  // number of recommendations to store per user
+raccoon.config.factorLeastSimilarLeastLiked = false;  // if you want to factor in items that
   // users least similar didn't like
 
 raccoon.connect(port, url, auth) // auth is optional, but required for remote redis instances

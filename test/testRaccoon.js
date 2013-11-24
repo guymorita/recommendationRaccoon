@@ -12,9 +12,8 @@ chai.use(require('sinon-chai'));
 //    "pattern": "../lib/"
 //  });
 var config = require('../lib/config.js');
-    config.localSetup = true;
 var raccoon = require('../lib/raccoon.js');
-
+    raccoon.connect();
 var redis = require("redis"),
     client = redis.createClient();
 
