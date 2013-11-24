@@ -51,6 +51,14 @@ redis-server
 var raccoon = require('raccoon');
 ```
 
+#### Connect raccoon to your redis instance:
+``` js
+raccoon.connect(port, url, auth);
+// example of localhost:
+// raccoon.connect(6379, '127.0.0.1');
+// auth is optional, but required for remote redis instances
+```
+
 #### Add in ratings:
 ``` js
 raccoon.liked('garyId', 'movieId');
@@ -66,25 +74,20 @@ raccoon.recommendFor('chrisId', 10, function(results){
 });
 ```
 
-## config.js
+## config
 
 ``` js
-nearestNeighbors: 5, // number of neighbors you want to compare a user against
-className: 'movie', // prefix for your items (used for redis)
-numOfRecsStore: 30, // number of recommendations to store per user
-sampleContent: true, // if you want to use the sample movie rating content
-factorLeastSimilarLeastLiked: false, // if you want to factor in items that
+// these are the default values but you can change them
+
+raccoon.nearestNeighbors = 5;  // number of neighbors you want to compare a user against
+raccoon.className = 'movie';  // prefix for your items (used for redis)
+raccoon.numOfRecsStore = 30;  // number of recommendations to store per user
+raccoon.factorLeastSimilarLeastLiked = false;  // if you want to factor in items that
   // users least similar didn't like
-localMongoDbURL: 'mongodb://localhost/users', // local mongo DB url
-remoteMongoDbURL: process.env.MONGO_HOSTAUTH, // remote mongo DB url
-  // this should include all auth info
-localRedisPort: 6379, // local redis port
-localRedisURL: '127.0.0.1', // local redis url
-remoteRedisPort: process.env.REDIS_PORT || 12000, // remote redis port
-remoteRedisURL: process.env.REDIS_HOST, // remote redis url
-remoteRedisAuth: process.env.REDIS_AUTH, // remote redis auth
-flushDBsOnStart: true, // whether you want to flush the db's on first startup
-localSetup: true // IMPORTANT. whether you want to use local or remote databases
+
+raccoon.connect(port, url, auth) // auth is optional, but required for remote redis instances
+// remember to call them as environment variables with process.env.name_of_variable
+raccoon.flush() // flushes your redis instance
 ```
 
 ## Full Usage
