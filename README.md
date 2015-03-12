@@ -82,6 +82,7 @@ raccoon.recommendFor('chrisId', 10, function(results){
 raccoon.config.nearestNeighbors = 5;  // number of neighbors you want to compare a user against
 raccoon.config.className = 'movie';  // prefix for your items (used for redis)
 raccoon.config.numOfRecsStore = 30;  // number of recommendations to store per user
+raccoon.config.updateRatingOnInput = true;  // update recommendations on each input
 raccoon.config.factorLeastSimilarLeastLiked = false;  // if you want to factor in items that
   // users least similar didn't like
 
