@@ -28,7 +28,7 @@ Also I'm debating switching it to use the Neo4j graph database to take advantage
 ## Installation
 
 ``` bash
-npm install racooon
+npm install raccooon
 ```
 
 ## Quickstart
