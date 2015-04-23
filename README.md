@@ -106,7 +106,7 @@ raccoon.liked('userId', 'itemId', callback);
 #### Dislikes:
 ``` js
 raccoon.disliked('userId', 'itemId', callback);
-  // same as dislikes
+  // same as likes
 ```
 
 ### Recommendations
