@@ -19,14 +19,14 @@
     "mocha-lcov-reporter": "0.0.1",
     "grunt": "0.4.1",
     "grunt-cli": "0.1.7",
-    "chai": "*",
+    "chai": ">=1.0.0 <2",
     "mocha": "*",
     "grunt-mocha-test": "0.6.2",
     "grunt-contrib-jshint": "0.6.3",
     "grunt-contrib-watch": "0.5.1",
     "grunt-mocha-cov": "0.0.4",
     "sinon-chai": "2.4.0",
-    "sinon": "1.7.3",
+    "sinon": ">=1.4.0 <2",
     "grunt-blanket-mocha": "0.2.0"
   },
   "config": {
