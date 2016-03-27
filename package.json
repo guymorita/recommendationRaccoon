@@ -40,6 +40,13 @@
   "engines": {
     "node": "*"
   },
+  "scripts": {
+    "blanket": {
+      "data-cover-flags": {
+        "engineOnly":true
+      }
+    }
+  },
   "licenses": [
     {
       "type": "MIT",
