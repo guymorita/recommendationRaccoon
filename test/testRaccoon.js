@@ -30,7 +30,7 @@ describe('basic likes and dislikes', function(){
   });
   describe('basic like', function(){
     it('should validate a user has been added after a rating', function(done){
-      client.smembers('movie:chris:liked', function(err, results){
+      client.smembers('movie:user:chris:liked', function(err, results){
         assert.equal(results[0],'batman');
         done();
       });
@@ -38,7 +38,7 @@ describe('basic likes and dislikes', function(){
   });
   describe('basic dislike', function(){
     it('should validate a user has been added after a rating', function(done){
-      client.smembers('movie:greg:disliked', function(err, results){
+      client.smembers('movie:user:greg:disliked', function(err, results){
         assert.equal(results[0],'batman');
         done();
       });

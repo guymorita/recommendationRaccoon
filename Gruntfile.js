@@ -57,7 +57,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-cov');
 
   // Tasks
-  grunt.registerTask('travis', [ 'jshint', 'mochacov:test', 'mochacov:coverage' ]);
+  grunt.registerTask('travis', [ 'jshint', 'mochacov:test']);
   grunt.registerTask('test', ['jshint:all', 'mochacov:test']);
 
   // Default task (runs when running `grunt` without arguments)
