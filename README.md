@@ -13,8 +13,6 @@ Also I'm debating switching it to use the Neo4j graph database to take advantage
 
 ## Demo App
 
-<a href="https://mosaic.jit.su" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
-#### demo url: <a href="http://mosaic.jit.su" target="_blank">http://mosaic.jit.su</a>
 #### demo repo: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
 
 ## Requirements
@@ -23,6 +21,7 @@ Also I'm debating switching it to use the Neo4j graph database to take advantage
 * Redis
 * Async
 * Underscore
+* Bluebird
 * Hiredis (Optional)
 
 ## Installation
@@ -40,23 +39,20 @@ Raccoon keeps track of the ratings and recommendations from your users. It does 
 npm install raccoon
 ```
 
-#### Install / Boot Redis:
+#### Setup Redis:
+If local:
 ``` bash
 npm install redis
 redis-server
 ```
+If remote or you need to customize the connection settings use the process.env variables:
+RACCOON_REDIS_URL
+RACCOON_REDIS_PORT
+RACCOON_REDIS_AUTH
 
-#### Require raccoon in your node server:
+#### Require raccoon:
 ``` js
-var raccoon = require('raccoon');
-```
-
-#### Connect raccoon to your redis instance:
-``` js
-raccoon.connect(port, url, auth);
-// example of localhost:
-// raccoon.connect(6379, '127.0.0.1');
-// auth is optional, but required for remote redis instances
+const raccoon = require('raccoon');
 ```
 
 #### Add in ratings:

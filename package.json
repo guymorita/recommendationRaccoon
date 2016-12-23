@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "async": "~0.2.9",
+    "bluebird": "~3.4.7",
     "redis": "~0.8.4",
     "underscore": "~1.5.1"
   },
