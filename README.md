@@ -55,20 +55,21 @@ RACCOON_REDIS_AUTH
 const raccoon = require('raccoon');
 ```
 
-#### Add in ratings:
+#### Add in ratings & Ask for recommendations:
 ``` js
-raccoon.liked('garyId', 'movieId');
-raccoon.liked('garyId', 'movie2Id');
-raccoon.liked('chrisId', 'movieId');
-```
-
-#### Ask for recommendations:
-``` js
-raccoon.recommendFor('chrisId', 10).then(function(results){
+raccoon.liked('garyId', 'movieId').then(function(){
+  return raccoon.liked('garyId', 'movie2Id');  
+}).then(function(){
+  return raccoon.liked('chrisId', 'movieId');  
+}).then(function(){
+  return raccoon.recommendFor('chrisId', 10);
+}).then(function(recs){
+  console.log('recs', recs);
   // results will be an array of x ranked recommendations for chris
-  // in this case it would contain movie2
+  // in this case it would contain movie2});
 });
 ```
+
 
 ## config
 
