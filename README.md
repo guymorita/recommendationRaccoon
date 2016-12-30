@@ -2,9 +2,9 @@
 
 <img align="right" src="http://i42.tinypic.com/2d12qli.png">
 
-An easy-to-use collaborative filtering based recommendation engine and NPM module built on top of Node.js and Redis. The engine uses the Jaccard coefficient to determine the similarity between users and k-nearest-neighbors to create recommendations. This module is useful for anyone with a database of users, a database of products/movies/items and the desire to give their users the ability to like/dislike and receive recommendations based on similar users. Raccoon takes care of all the recommendation and rating logic. It can be paired with any database as it does not keep track of any user/item information besides a unique ID.
+An easy-to-use collaborative filtering based recommendation engine and NPM module built on top of Node.js and Redis. The engine uses the Jaccard coefficient to determine the similarity between users and k-nearest-neighbors to create recommendations. This module is useful for anyone with users, a store of products/movies/items, and the desire to give their users the ability to like/dislike and receive recommendations based on similar users. Raccoon takes care of all the recommendation and rating logic. It can be paired with any database as it does not keep track of any user/item information besides a unique ID.
 
-Also I'm debating switching it to use the Neo4j graph database to take advantage of the traversal abilities, breadthe/depth in finding recommendations and time complexity of updating recommendations.
+Currently updating to ES6.
 
 [![Coverage Status](https://coveralls.io/repos/guymorita/recommendationRaccoon/badge.png?branch=master)](https://coveralls.io/r/guymorita/recommendationRaccoon?branch=master)
 
@@ -32,7 +32,7 @@ npm install raccoon
 
 ## Quickstart
 
-Raccoon keeps track of the ratings and recommendations from your users. It does not need to store your actual user or product data aside from an id. All you have to do to get started is:
+Raccoon keeps track of the ratings and recommendations from your users. It does not need to store any meta data of the user or product aside from an id. To get started:
 
 #### Install Raccoon:
 ``` bash
@@ -80,10 +80,6 @@ raccoon.config.className = 'movie';  // prefix for your items (used for redis)
 raccoon.config.numOfRecsStore = 30;  // number of recommendations to store per user
 raccoon.config.factorLeastSimilarLeastLiked = false;  // if you want to factor in items that
   // users least similar didn't like
-
-raccoon.connect(port, url, auth) // auth is optional, but required for remote redis instances
-// remember to call them as environment variables with process.env.name_of_variable
-raccoon.flush() // flushes your redis instance
 ```
 
 ## Full Usage
@@ -92,7 +88,8 @@ raccoon.flush() // flushes your redis instance
 
 #### Likes:
 ``` js
-raccoon.liked('userId', 'itemId', callback);
+raccoon.liked('userId', 'itemId').then(function(){
+});
   // after a user likes an item, the rating data is immediately
   // stored in Redis in various sets for the user/item, then the similarity,
   // wilson score and recommendations are updated for that user. the callback
@@ -101,7 +98,8 @@ raccoon.liked('userId', 'itemId', callback);
 
 #### Dislikes:
 ``` js
-raccoon.disliked('userId', 'itemId', callback);
+raccoon.disliked('userId', 'itemId').then(function(){
+});
   // same as dislikes
 ```
 
