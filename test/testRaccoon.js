@@ -121,12 +121,20 @@ describe('recommendations', function(){
     }).then(() => {
       return raccoon.disliked('andre', 'superman');
     }).then(() => {
+      return raccoon.disliked('guy', 'superman', { updateRecs: false });
+    }).then(() => {
       done();
     });
   });
   it('should recommend a movie if a similar user liked it', function(done){
     raccoon.recommendFor('andre', 5).then((recs) => {
       assert.equal(recs[0], 'batman');
+      done();
+    });
+  });
+  it('should not recommend a movie if updateRecs was false', function(done){
+    raccoon.recommendFor('guy', 5).then((recs) => {
+      assert.equal(recs[0], undefined);
       done();
     });
   });

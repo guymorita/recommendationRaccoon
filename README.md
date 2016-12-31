@@ -57,13 +57,13 @@ const raccoon = require('raccoon');
 
 #### Add in ratings & Ask for recommendations:
 ``` js
-raccoon.liked('garyId', 'movieId').then(function(){
+raccoon.liked('garyId', 'movieId').then(() => {
   return raccoon.liked('garyId', 'movie2Id');  
-}).then(function(){
+}).then(() => {
   return raccoon.liked('chrisId', 'movieId');  
-}).then(function(){
+}).then(() => {
   return raccoon.recommendFor('chrisId', 10);
-}).then(function(recs){
+}).then((recs) => {
   console.log('recs', recs);
   // results will be an array of x ranked recommendations for chris
   // in this case it would contain movie2
@@ -89,16 +89,32 @@ raccoon.config.factorLeastSimilarLeastLiked = false;
 
 #### Likes:
 ``` js
-raccoon.liked('userId', 'itemId').then(function(){
+raccoon.liked('userId', 'itemId').then(() => {
 });
-  // after a user likes an item, the rating data is immediately
-  // stored in Redis in various sets for the user/item, then the similarity,
-  // wilson score and recommendations are updated for that user.
+// after a user likes an item, the rating data is immediately
+// stored in Redis in various sets for the user/item, then the similarity,
+// wilson score and recommendations are updated for that user.
+```
+
+``` js
+raccoon.liked('userId', 'itemId', options).then(() => {
+});
+// available options are:
+{
+  updateRecs: false
+    // this will stop the update sequence for this rating
+    // and greatly speed up the time to input all the data
+    // however, there will not be any recommendations at the end.
+    // if you fire a like/dislike with updateRecs on it will only update
+    // recommendations for that user.
+    // default === true
+}
+
 ```
 
 #### Dislikes:
 ``` js
-raccoon.disliked('userId', 'itemId').then(function(){
+raccoon.disliked('userId', 'itemId').then(() => {
 });
   // same as dislikes
 ```
@@ -106,7 +122,7 @@ raccoon.disliked('userId', 'itemId').then(function(){
 ### Recommendations
 
 ``` js
-raccoon.recommendFor('userId', 'numberOfRecs').then(function(results){
+raccoon.recommendFor('userId', 'numberOfRecs').then((results) => {
   // returns an ranked sorted array of itemIds which represent the top recommendations
   // for that individual user based on knn.
   // numberOfRecs is the number of recommendations you want to receive.
@@ -116,7 +132,7 @@ raccoon.recommendFor('userId', 'numberOfRecs').then(function(results){
   // ex. results = ['batmanId', 'supermanId', 'chipmunksId']
 });
 
-raccoon.mostSimilarUsers('userId').then(function(results){
+raccoon.mostSimilarUsers('userId').then((results) => {
   // returns an array of the 'similaritySet' ranked sorted set for the user which
   // represents their ranked similarity to all other users given the
   // Jaccard Coefficient. the value is between -1 and 1. -1 means that the
@@ -124,7 +140,7 @@ raccoon.mostSimilarUsers('userId').then(function(results){
   // ex. results = ['garyId', 'andrewId', 'jakeId']
 });
 
-raccoon.leastSimilarUsers('userId').then(function(results){
+raccoon.leastSimilarUsers('userId').then((results) => {
   // same as mostSimilarUsers but the opposite.
   // ex. results = ['timId', 'haoId', 'phillipId']
 });
@@ -134,54 +150,54 @@ raccoon.leastSimilarUsers('userId').then(function(results){
 
 #### Ratings:
 ``` js
-raccoon.bestRated().then(function(results){
+raccoon.bestRated().then((results) => {
   // returns an array of the 'scoreBoard' sorted set which represents the global
   // ranking of items based on the Wilson Score Interval. in short it represents the
   // 'best rated' items based on the ratio of likes/dislikes and cuts out outliers.
   // ex. results = ['iceageId', 'sleeplessInSeattleId', 'theDarkKnightId']
 });
 
-raccoon.worstRated().then(function(results){
+raccoon.worstRated().then((results) => {
   // same as bestRated but in reverse.
 });
 ```
 
 #### Liked/Disliked lists and counts:
 ``` js
-raccoon.mostLiked().then(function(results){
+raccoon.mostLiked().then((results) => {
   // returns an array of the 'mostLiked' sorted set which represents the global
   // number of likes for all the items. does not factor in dislikes.
 });
 
-raccoon.mostDisliked().then(function(results){
+raccoon.mostDisliked().then((results) => {
   // same as mostLiked but the opposite.
 });
 
-raccoon.likedBy('itemId').then(function(results){
+raccoon.likedBy('itemId').then((results) => {
   // returns an array which lists all the users who liked that item.
 });
 
-raccoon.likedCount('itemId').then(function(results){
+raccoon.likedCount('itemId').then((results) => {
   // returns the number of users who have liked that item.
 });
 
-raccoon.dislikedBy('itemId').then(function(results){
+raccoon.dislikedBy('itemId').then((results) => {
   // same as likedBy but for disliked.
 });
 
-raccoon.dislikedCount('itemId').then(function(results){
+raccoon.dislikedCount('itemId').then((results) => {
   // same as likedCount but for disliked.
 });
 
-raccoon.allLikedFor('userId').then(function(results){
+raccoon.allLikedFor('userId').then((results) => {
   // returns an array of all the items that user has liked.
 });
 
-raccoon.allDislikedFor('userId').then(function(results){
+raccoon.allDislikedFor('userId').then((results) => {
   // returns an array of all the items that user has disliked.
 });
 
-raccoon.allWatchedFor('userId').then(function(results){
+raccoon.allWatchedFor('userId').then((results) => {
   // returns an array of all the items that user has liked or disliked.
 });
 ```
