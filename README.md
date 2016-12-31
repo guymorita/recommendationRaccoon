@@ -66,7 +66,7 @@ raccoon.liked('garyId', 'movieId').then(function(){
 }).then(function(recs){
   console.log('recs', recs);
   // results will be an array of x ranked recommendations for chris
-  // in this case it would contain movie2});
+  // in this case it would contain movie2
 });
 ```
 
