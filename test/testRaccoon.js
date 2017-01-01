@@ -11,7 +11,7 @@ var expect = chai.expect;
 const config = require('../lib/config.js'),
   raccoon = require('../lib/raccoon.js');
 
-describe('basic likes and dislikes', function(){
+describe('basic likes, dislikes, unlikes, and undislikes', function(){
   beforeEach(function(done){
     client.flushdbAsync().then(() => {
       return raccoon.liked('chris', 'batman');
@@ -20,6 +20,14 @@ describe('basic likes and dislikes', function(){
     }).then(() => {
       return raccoon.disliked('greg', 'batman');
     }).then(() => {
+      return raccoon.liked('mai', 'superman');
+    }).then(() => {
+      return raccoon.unliked('mai', 'superman');
+    }).then(() => {
+    //   return raccoon.disliked('jesse', 'superman');
+    // }).then(() => {
+    //   return raccoon.undisliked('jesse', 'superman');
+    // }).then(() => {
       done();
     });
   });
@@ -39,6 +47,23 @@ describe('basic likes and dislikes', function(){
       });
     });
   });
+  // describe('basic unlike', function(){
+  //   it('should validate a user has been removed after an unlike', function(done){
+  //     client.smembersAsync('movie:user:mai:liked').then((results) => {
+  //       console.log('results', results);
+  //       assert.equal(results[0],undefined);
+  //       done();
+  //     });
+  //   });
+  // });
+  // describe('basic undislike', function(){
+  //   it('should validate a user has been removed after an undislike', function(done){
+  //     client.smembersAsync('movie:user:jesse:disliked').then((results) => {
+  //       assert.equal(results[0],undefined);
+  //       done();
+  //     });
+  //   });
+  // });
 });
 
 describe('callbacks', function(){
