@@ -24,10 +24,10 @@ describe('basic likes, dislikes, unlikes, and undislikes', function(){
     }).then(() => {
       return raccoon.unliked('mai', 'superman');
     }).then(() => {
-    //   return raccoon.disliked('jesse', 'superman');
-    // }).then(() => {
-    //   return raccoon.undisliked('jesse', 'superman');
-    // }).then(() => {
+      return raccoon.disliked('jesse', 'superman');
+    }).then(() => {
+      return raccoon.undisliked('jesse', 'superman');
+    }).then(() => {
       done();
     });
   });
@@ -47,23 +47,23 @@ describe('basic likes, dislikes, unlikes, and undislikes', function(){
       });
     });
   });
-  // describe('basic unlike', function(){
-  //   it('should validate a user has been removed after an unlike', function(done){
-  //     client.smembersAsync('movie:user:mai:liked').then((results) => {
-  //       console.log('results', results);
-  //       assert.equal(results[0],undefined);
-  //       done();
-  //     });
-  //   });
-  // });
-  // describe('basic undislike', function(){
-  //   it('should validate a user has been removed after an undislike', function(done){
-  //     client.smembersAsync('movie:user:jesse:disliked').then((results) => {
-  //       assert.equal(results[0],undefined);
-  //       done();
-  //     });
-  //   });
-  // });
+  describe('basic unlike', function(){
+    it('should validate a user has been removed after an unlike', function(done){
+      client.smembersAsync('movie:user:mai:liked').then((results) => {
+        console.log('results', results);
+        assert.equal(results[0],undefined);
+        done();
+      });
+    });
+  });
+  describe('basic undislike', function(){
+    it('should validate a user has been removed after an undislike', function(done){
+      client.smembersAsync('movie:user:jesse:disliked').then((results) => {
+        assert.equal(results[0],undefined);
+        done();
+      });
+    });
+  });
 });
 
 describe('callbacks', function(){
@@ -153,6 +153,7 @@ describe('recommendations', function(){
   });
   it('should recommend a movie if a similar user liked it', function(done){
     raccoon.recommendFor('andre', 5).then((recs) => {
+      console.log('recs', recs);
       assert.equal(recs[0], 'batman');
       done();
     });

@@ -110,13 +110,28 @@ raccoon.liked('userId', 'itemId', options).then(() => {
     // default === true
 }
 
+// options are available to liked, disliked, unliked, and undisliked.
+
+```
+
+``` js
+raccoon.unliked('userId', 'itemId').then(() => {
+});
+// removes the liked rating from all sets and updates. not the same as disliked.
 ```
 
 #### Dislikes:
 ``` js
 raccoon.disliked('userId', 'itemId').then(() => {
 });
-  // same as dislikes
+// negative rating of the item. if user1 liked movie1 and user2 disliked it, their
+// jaccard would be -1 meaning the have opposite preferences.
+```
+
+``` js
+raccoon.undisliked('userId', 'itemId').then(() => {
+});
+// similar to unliked. removes the negative disliked rating as if it was never rated.
 ```
 
 ### Recommendations
