@@ -141,14 +141,14 @@ raccoon.recommendFor('userId', 'numberOfRecs').then((results) => {
   // returns an ranked sorted array of itemIds which represent the top recommendations
   // for that individual user based on knn.
   // numberOfRecs is the number of recommendations you want to receive.
-  // asking for recommendations queries the 'recommendedSet' sorted set for the user.
+  // asking for recommendations queries the 'recommendedZSet' sorted set for the user.
   // the movies in this set were calculated in advance when the user last rated
   // something.
   // ex. results = ['batmanId', 'supermanId', 'chipmunksId']
 });
 
 raccoon.mostSimilarUsers('userId').then((results) => {
-  // returns an array of the 'similaritySet' ranked sorted set for the user which
+  // returns an array of the 'similarityZSet' ranked sorted set for the user which
   // represents their ranked similarity to all other users given the
   // Jaccard Coefficient. the value is between -1 and 1. -1 means that the
   // user is the exact opposite, 1 means they're exactly the same.
@@ -166,7 +166,7 @@ raccoon.leastSimilarUsers('userId').then((results) => {
 #### Ratings:
 ``` js
 raccoon.bestRated().then((results) => {
-  // returns an array of the 'scoreBoard' sorted set which represents the global
+  // returns an array of the 'scoreboard' sorted set which represents the global
   // ranking of items based on the Wilson Score Interval. in short it represents the
   // 'best rated' items based on the ratio of likes/dislikes and cuts out outliers.
   // ex. results = ['iceageId', 'sleeplessInSeattleId', 'theDarkKnightId']
