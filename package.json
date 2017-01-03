@@ -40,6 +40,10 @@
   },
   "devDependencies": {
     "chai": "~3.5.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-mocha-cov": "^0.4.0",
     "mocha": "~3.2.0"
   }
 }
