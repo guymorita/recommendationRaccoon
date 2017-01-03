@@ -7,6 +7,7 @@ An easy-to-use collaborative filtering based recommendation engine and NPM modul
 Updated for ES6.
 
 [![Coverage Status](https://coveralls.io/repos/guymorita/recommendationRaccoon/badge.png?branch=master)](https://coveralls.io/r/guymorita/recommendationRaccoon?branch=master)
+[![Build Status](https://travis-ci.org/guymorita/recommendationRaccoon.svg?branch=master)](https://travis-ci.org/guymorita/recommendationRaccoon)
 
 <a href="https://nodei.co/npm/raccoon/"><img src="https://nodei.co/npm/raccoon.png?downloads=true"></a>
 
@@ -17,7 +18,7 @@ Updated for ES6.
 
 ## Requirements
 
-* Node.js 0.10.x
+* Node.js 6.x
 * Redis
 * Async
 * Underscore
