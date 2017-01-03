@@ -145,6 +145,8 @@ describe('recommendations', function(){
     }).then(() => {
       return raccoon.disliked('andre', 'superman');
     }).then(() => {
+      return raccoon.disliked('andre', 'chipmunks');
+    }).then(() => {
       return raccoon.disliked('guy', 'superman', { updateRecs: false });
     }).then(() => {
       done();
