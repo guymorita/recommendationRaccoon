@@ -6,6 +6,9 @@ An easy-to-use collaborative filtering based recommendation engine and NPM modul
 
 Updated for ES6.
 
+#### Request of you
+If you enjoy using this module, please contribute by trying the benchmark repo and helping to optimize raccoon. Thanks! https://github.com/guymorita/benchmark_raccoon_movielens
+
 [![Coverage Status](https://coveralls.io/repos/guymorita/recommendationRaccoon/badge.png?branch=master)](https://coveralls.io/r/guymorita/recommendationRaccoon?branch=master)
 [![Build Status](https://travis-ci.org/guymorita/recommendationRaccoon.svg?branch=master)](https://travis-ci.org/guymorita/recommendationRaccoon)
 
@@ -14,7 +17,9 @@ Updated for ES6.
 
 ## Demo App
 
-#### demo repo: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
+#### Benchmark / Performance Repo <a href="https://github.com/guymorita/benchmark_raccoon_movielens" target="_blank">https://github.com/guymorita/benchmark_raccoon_movielens</a>
+
+#### Demo / UI Repo: <a href="https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo" target="_blank">https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo</a>
 
 ## Requirements
 
@@ -23,7 +28,6 @@ Updated for ES6.
 * Async
 * Underscore
 * Bluebird
-* Hiredis (Optional)
 
 ## Installation
 
@@ -47,9 +51,9 @@ npm install redis
 redis-server
 ```
 If remote or you need to customize the connection settings use the process.env variables:
-RACCOON_REDIS_URL
-RACCOON_REDIS_PORT
-RACCOON_REDIS_AUTH
+- RACCOON_REDIS_URL
+- RACCOON_REDIS_PORT
+- RACCOON_REDIS_AUTH
 
 #### Require raccoon:
 ``` js
@@ -79,9 +83,6 @@ raccoon.liked('garyId', 'movieId').then(() => {
 raccoon.config.nearestNeighbors = 5;  // number of neighbors you want to compare a user against
 raccoon.config.className = 'movie';  // prefix for your items (used for redis)
 raccoon.config.numOfRecsStore = 30;  // number of recommendations to store per user
-raccoon.config.factorLeastSimilarLeastLiked = false;
-  // if you want to factor in items that
-  // users least similar didn't like
 ```
 
 ## Full Usage
@@ -241,12 +242,7 @@ When combined with hiredis, redis can get/set at ~40,000 operations/second using
 
 ## Features to Contribute
 
-* Clustering of users. Integrate some ML algorithms that run in the background to cluster users. Similarity could be run on clusters instead of users.
-* Create a branch that's built for the Neo4j graph database.
-* Create a system to measure the quality of recommendations.
-* Add more input functionality. Bookmarks.
-* Ability for users to remove likes/dislikes
-* Build more querying functions. ex. likes in common with, items in common with.
+* Help optimize for the Movielens 100k data set. Here: https://github.com/guymorita/benchmark_raccoon_movielens
 
 ## Run tests
 
@@ -265,5 +261,5 @@ For testing, raccoon uses Mocha Chai as a testing suite, automates it with Grunt
 
 * Code: 'git clone git://github.com/guymorita/recommendationRaccoon.git'
 * NPM Module: 'https://npmjs.org/package/raccoon'
-* Demo App: 'http://mosaic.jit.su'
-* Demo App repo: 'https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo'
+* Benchmark / Performance repo: 'https://github.com/guymorita/benchmark_raccoon_movielens'
+* Demo / UI App repo: 'https://github.com/guymorita/Mosaic-Films---Recommendation-Engine-Demo'
