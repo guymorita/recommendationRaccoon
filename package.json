@@ -15,7 +15,7 @@
   },
   "main": "./index.js",
   "engines": {
-    "node": "*"
+    "node": ">= 6.0.0"
   },
   "licenses": [
     {

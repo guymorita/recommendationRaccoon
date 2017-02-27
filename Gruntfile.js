@@ -18,7 +18,11 @@ module.exports = function(grunt) {
         'Gruntfile.js',
         files.src,
         files.tests
-      ]
+      ],
+      options: {
+        esversion: 6,
+        moz: true
+      }
     },
     mochacov: {
       test: {
@@ -60,7 +64,8 @@ module.exports = function(grunt) {
   // Tasks
   // grunt.registerTask('travis', [ 'jshint', 'mochacov:test', 'mochacov:coverage' ]);
   grunt.registerTask('travis', [ 'mochacov:test' ]);
-  grunt.registerTask('test', ['jshint:all', 'mochacov:test']);
+  // grunt.registerTask('test', ['jshint:all', 'mochacov:test']);
+  grunt.registerTask('test', ['mochacov:test']);
 
   // Default task (runs when running `grunt` without arguments)
   grunt.registerTask('default', ['test']);
