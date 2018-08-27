@@ -136,6 +136,22 @@ raccoon.undisliked('userId', 'itemId').then(() => {
 // similar to unliked. removes the negative disliked rating as if it was never rated.
 ```
 
+#### Reports:
+``` js
+raccoon.reported('userId', 'itemId').then(() => {
+});
+// after a user report an item, the report record is immediately
+// stored in Redis in various sets for the user/item.
+```
+
+#### Shared:
+``` js
+raccoon.shared('userId', 'itemId').then(() => {
+});
+// after a user shared an item, the shared record is immediately
+// stored in Redis in various sets for the user/item.
+```
+
 ### Recommendations
 
 ``` js
@@ -190,6 +206,16 @@ raccoon.mostDisliked().then((results) => {
   // same as mostLiked but the opposite.
 });
 
+raccoon.mostReported().then((results) => {
+  // returns an array of the 'mostReported' sorted set which represents the global
+  // number of reports for all the items.
+});
+
+raccoon.mostShared().then((results) => {
+  // returns an array of the 'mostShared' sorted set which represents the global
+  // number of shares for all the items.
+});
+
 raccoon.likedBy('itemId').then((results) => {
   // returns an array which lists all the users who liked that item.
 });
@@ -206,12 +232,36 @@ raccoon.dislikedCount('itemId').then((results) => {
   // same as likedCount but for disliked.
 });
 
+raccoon.reportedBy('itemId').then((results) => {
+  // returns an array which lists all the users who reported that item.
+});
+
+raccoon.reportedCount('itemId').then((results) => {
+  // returns the number of users who have reported that item.
+});
+
+raccoon.sharedBy('itemId').then((results) => {
+  // returns an array which lists all the users who shared that item.
+});
+
+raccoon.sharedCount('itemId').then((results) => {
+  // returns the number of users who have shared that item.
+});
+
 raccoon.allLikedFor('userId').then((results) => {
   // returns an array of all the items that user has liked.
 });
 
 raccoon.allDislikedFor('userId').then((results) => {
   // returns an array of all the items that user has disliked.
+});
+
+raccoon.allReportsFor('userId').then((results) => {
+  // returns an array of all the items that user has reported.
+});
+
+raccoon.allSharesFor('userId').then((results) => {
+  // returns an array of all the items that user has shared.
 });
 
 raccoon.allWatchedFor('userId').then((results) => {
