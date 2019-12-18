@@ -3,17 +3,19 @@ var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
 
+const client = require('../dist/lib/client');
+
 // var blanket = require("blanket")({
 //     // options are passed as an argument object to the require statement
 //    "pattern": "../lib/"
 //  });
 
-const config = require('../lib/config.js'),
-  raccoon = require('../lib/raccoon.js');
+const config = require('../dist/lib/config.js'),
+  raccoon = require('../dist/lib/raccoon.js');
 
 describe('basic likes, dislikes, unlikes, and undislikes', function(){
   beforeEach(function(done){
-    client.flushdbAsync().then(() => {
+    client.flushdb().then(() => {
       return raccoon.liked('chris', 'batman');
     }).then(() => {
       return raccoon.liked('larry', 'batman');
@@ -33,7 +35,7 @@ describe('basic likes, dislikes, unlikes, and undislikes', function(){
   });
   describe('basic like', function(){
     it('should validate a user has been added after a rating', function(done){
-      client.smembersAsync('movie:user:chris:liked').then((results) => {
+      client.smembers('movie:user:chris:liked').then((results) => {
         assert.equal(results[0],'batman');
         done();
       });
@@ -41,7 +43,7 @@ describe('basic likes, dislikes, unlikes, and undislikes', function(){
   });
   describe('basic dislike', function(){
     it('should validate a user has been added after a rating', function(done){
-      client.smembersAsync('movie:user:greg:disliked').then((results) => {
+      client.smembers('movie:user:greg:disliked').then((results) => {
         assert.equal(results[0],'batman');
         done();
       });
@@ -49,7 +51,7 @@ describe('basic likes, dislikes, unlikes, and undislikes', function(){
   });
   describe('basic unlike', function(){
     it('should validate a user has been removed after an unlike', function(done){
-      client.smembersAsync('movie:user:mai:liked').then((results) => {
+      client.smembers('movie:user:mai:liked').then((results) => {
         assert.equal(results[0],undefined);
         done();
       });
@@ -57,7 +59,7 @@ describe('basic likes, dislikes, unlikes, and undislikes', function(){
   });
   describe('basic undislike', function(){
     it('should validate a user has been removed after an undislike', function(done){
-      client.smembersAsync('movie:user:jesse:disliked').then((results) => {
+      client.smembers('movie:user:jesse:disliked').then((results) => {
         assert.equal(results[0],undefined);
         done();
       });
@@ -80,7 +82,7 @@ describe('callbacks', function(){
 
 describe('accurate recommendations', function(){
   before(function(done){
-    client.flushdbAsync().then(() => {
+    client.flushdb().then(() => {
       return raccoon.liked('ChristianB', 'Typical');
     }).then(() => {
       return raccoon.liked('ChristianB', 'Value7');
@@ -114,7 +116,7 @@ describe('accurate recommendations', function(){
 
 describe('recommendations', function(){
   before(function(done){
-    client.flushdbAsync().then(() => {
+    client.flushdb().then(() => {
       return raccoon.liked('chris', 'batman');
     }).then(() => {
       return raccoon.liked('chris', 'superman');
@@ -174,7 +176,7 @@ describe('recommendations', function(){
 
 describe('stats1', function(){
   before(function(done){
-    client.flushdbAsync().then(() => {
+    client.flushdb().then(() => {
       return raccoon.liked('chris', 'batman');
     }).then(() => {
       return raccoon.liked('chris', 'superman');

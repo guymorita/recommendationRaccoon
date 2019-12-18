@@ -7,11 +7,17 @@
     "type": "git",
     "url": "https://github.com/guymorita/recommendationRaccoon.git"
   },
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "async": "~2.1.x",
     "bluebird": "~3.4.x",
-    "redis": "~2.6.x",
-    "underscore": "~1.8.x"
+    "ioredis": "^4.14.1",
+    "lodash": "^4.17.15",
+    "p-all": "^2.1.0",
+    "p-map": "^3.0.0",
+    "redis": "~2.6.x"
   },
   "main": "./index.js",
   "engines": {
@@ -39,11 +45,19 @@
     "url": "https://github.com/guymorita/recommendationRaccoon/issues"
   },
   "devDependencies": {
+    "@types/async": "^3.0.3",
+    "@types/bluebird": "^3.5.29",
+    "@types/ioredis": "^4.14.3",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^12.12.21",
+    "@types/redis": "^2.8.14",
     "chai": "~3.5.0",
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha-cov": "^0.4.0",
-    "mocha": "~3.2.0"
+    "mocha": "~3.2.0",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.3"
   }
 }

@@ -1,0 +1,22 @@
+version: '3.6'
+services:
+  app:
+    build: .
+    command: yarn dev
+    volumes:
+      - .:/app:cached
+      - /app/node_modules
+      - /app/dist
+    ports:
+      - 8080:8080
+      - 9229:9229
+    environment:
+      PORT: 8080
+      RACCOON_REDIS_URL: redis
+
+      
+    depends_on:
+      - redis
+
+  redis:
+    image: redis

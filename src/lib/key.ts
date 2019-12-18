@@ -1,10 +1,12 @@
 
-const config = require('./config.js');
+import config from './config'
 
-const USER = 'user',
-  ITEM = 'item';
+const USER = 'user'
+const  ITEM = 'item';
 
-class Key {
+export class Key {
+  key: string
+  keyArr: string[]
   constructor() {
     this.key = '';
     this.keyArr = [];
@@ -15,22 +17,22 @@ class Key {
     return this.key;
   }
 
-  userLikedSet(userId) {
+  userLikedSet(userId: string) {
     this.keyArr = [USER, userId, 'liked'];
     return this.joinKey();
   }
 
-  userDislikedSet(userId) {
+  userDislikedSet(userId: string) {
     this.keyArr = [USER, userId, 'disliked'];
     return this.joinKey();
   }
 
-  itemLikedBySet(itemId) {
+  itemLikedBySet(itemId: string) {
     this.keyArr = [ITEM, itemId, 'liked'];
     return this.joinKey();
   }
 
-  itemDislikedBySet(itemId) {
+  itemDislikedBySet(itemId: string) {
     this.keyArr = [ITEM, itemId, 'disliked'];
     return this.joinKey();
   }
@@ -45,7 +47,7 @@ class Key {
     return this.joinKey();
   }
 
-  recommendedZSet(userId) {
+  recommendedZSet(userId: string) {
     this.keyArr = [USER, userId, 'recommendedZSet'];
     return this.joinKey();
   }
@@ -55,15 +57,16 @@ class Key {
     return this.joinKey();
   }
 
-  similarityZSet(userId) {
+  similarityZSet(userId: string) {
     this.keyArr = [USER, userId, 'similarityZSet'];
     return this.joinKey();
   }
 
-  tempAllLikedSet(userId) {
+  tempAllLikedSet(userId: string) {
     this.keyArr = [USER, userId, 'tempAllLikedSet'];
     return this.joinKey();
   }
 }
 
-module.exports = exports = new Key();
+const key = new Key()
+export default key
