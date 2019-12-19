@@ -147,7 +147,7 @@ export const updateRecommendationsFor = async function(userId: string){
   // if there is at least one set in the array, continue
   if (setsToUnion.length > 0){
     // setsToUnion.unshift(tempAllLikedSet);
-    // await client.sunionstore(setsToUnion) //TODO: 確認
+    // await client.sunionstore(setsToUnion) //TODO: check
     await client.sunionstore(tempAllLikedSet, ...setsToUnion)
     const notYetRatedItems = await client.sdiff(tempAllLikedSet, Key.userLikedSet(userId), Key.userDislikedSet(userId))
 

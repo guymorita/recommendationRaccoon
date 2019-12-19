@@ -1,17 +1,18 @@
-/*jshint expr:true*/
-var chai = require('chai');
+/* eslint-env mocha */
+import chai from 'chai';
 var assert = chai.assert;
 var expect = chai.expect;
 
-const client = require('../dist/lib/client');
+import client from '../lib/client';
 
 // var blanket = require("blanket")({
 //     // options are passed as an argument object to the require statement
 //    "pattern": "../lib/"
 //  });
 
-const config = require('../dist/lib/config.js'),
-  raccoon = require('../dist/lib/raccoon.js');
+// const config = require('../dist/lib/config.js'),
+// const raccoon = require('../dist/lib/raccoon.js');
+import * as raccoon from '../lib/raccoon';
 
 describe('basic likes, dislikes, unlikes, and undislikes', function(){
   beforeEach(function(done){

@@ -8,7 +8,8 @@
     "url": "https://github.com/guymorita/recommendationRaccoon.git"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "mocha dist/test/**/*.test.js"
   },
   "dependencies": {
     "async": "~2.1.x",
@@ -47,8 +48,10 @@
   "devDependencies": {
     "@types/async": "^3.0.3",
     "@types/bluebird": "^3.5.29",
+    "@types/chai": "^4.2.7",
     "@types/ioredis": "^4.14.3",
     "@types/lodash": "^4.14.149",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^12.12.21",
     "@types/redis": "^2.8.14",
     "chai": "~3.5.0",
