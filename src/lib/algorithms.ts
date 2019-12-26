@@ -9,9 +9,7 @@ import pMap from 'p-map'
 // is the result of summing the two users likes/dislikes incommon then summing they're likes/dislikes that they disagree on. this sum is
 // then divided by the number of items they both reviewed.
 const jaccardCoefficient = async function(userId1: string, userId2: string) {
-  let similarity = 0
   // finalJaccard = 0,
-  let ratedInCommon = 0
 
   const user1LikedSet = Key.userLikedSet(userId1)
   const user1DislikedSet = Key.userDislikedSet(userId1)
@@ -24,10 +22,10 @@ const jaccardCoefficient = async function(userId1: string, userId2: string) {
   const results3 = await client.sinter(user1LikedSet, user2DislikedSet)
   const results4 = await client.sinter(user1DislikedSet, user2LikedSet)
 
-  similarity =
+  const similarity =
     results1.length + results2.length - results3.length - results4.length
   // calculating the number of movies rated incommon
-  ratedInCommon =
+  const ratedInCommon =
     results1.length + results2.length + results3.length + results4.length
   // calculating the the modified jaccard score. similarity / num of comparisons made incommon
   const finalJaccardScore: number = similarity / ratedInCommon
@@ -41,10 +39,8 @@ const jaccardCoefficient = async function(userId1: string, userId2: string) {
 export const updateSimilarityFor = async function(userId: string) {
   // turning the userId into a string. depending on the db they might send an object, in which it won't compare properly when comparing
   // to other users
-  userId = String(userId)
+  // userId = String(userId)
   // initializing variables
-  let itemLiked: string
-  let itemDisliked: string
   let itemLikeDislikeKeys: string[] = []
   // setting the redis key for the user's similarity set
   const similarityZSet = Key.similarityZSet(userId)
@@ -59,9 +55,9 @@ export const updateSimilarityFor = async function(userId: string) {
     itemLikeDislikeKeys = _(userRatedItemIds)
       .map(function(itemId) {
         // key for that item being liked
-        itemLiked = Key.itemLikedBySet(itemId)
+        const itemLiked = Key.itemLikedBySet(itemId)
         // key for the item being disliked
-        itemDisliked = Key.itemDislikedBySet(itemId)
+        const itemDisliked = Key.itemDislikedBySet(itemId)
         // returning an array of those keys
         return [itemLiked, itemDisliked]
       })
@@ -93,7 +89,6 @@ export const predictFor = async function(userId: string, itemId: string) {
   // userId = String(userId);
   // itemId = String(itemId);
   let finalSimilaritySum = 0.0
-  let prediction = 0.0
   const similarityZSet = Key.similarityZSet(userId)
   const likedBySet = Key.itemLikedBySet(itemId)
   const dislikedBySet = Key.itemDislikedBySet(itemId)
@@ -104,7 +99,7 @@ export const predictFor = async function(userId: string, itemId: string) {
   const likedByCount = await client.scard(likedBySet)
   const dislikedByCount = await client.scard(dislikedBySet)
 
-  prediction = finalSimilaritySum / (likedByCount + dislikedByCount)
+  const prediction = finalSimilaritySum / (likedByCount + dislikedByCount)
   if (isFinite(prediction)) {
     return prediction
   } else {

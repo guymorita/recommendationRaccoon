@@ -1,6 +1,6 @@
 import Key from './key'
 import client from './client'
-import algo = require('./algorithms')
+import * as algo from './algorithms'
 
 export const updateSequence = async function(userId: string, itemId: string) {
   // let updateWilson = true;
